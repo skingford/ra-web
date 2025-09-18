@@ -1,0 +1,14 @@
+{
+  "name": "@ra-web/admin",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Admin app dev script - customize as needed'",
+    "build": "echo 'Admin app build script - customize as needed'",
+    "lint": "echo 'Admin app lint script - customize as needed'",
+    "type-check": "echo 'Admin app type-check script - customize as needed'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
