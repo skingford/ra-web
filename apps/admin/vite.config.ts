@@ -1,13 +1,7 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { createReactConfig, presets } from '@ra-web/vite-config/react'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  server: {
-    port: 5174,
-  },
-  preview: {
-    port: 5174,
-  },
-})
+export default defineConfig(createReactConfig({
+  ...presets.admin,
+}))

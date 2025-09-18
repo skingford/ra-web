@@ -1,0 +1,38 @@
+{
+  "name": "@ra-web/vite-config",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    },
+    "./react": {
+      "import": "./src/react.js",
+      "types": "./src/react.d.ts"
+    },
+    "./base": {
+      "import": "./src/base.js",
+      "types": "./src/base.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "vite": "^7.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "~5.8.3"
+  },
+  "peerDependencies": {
+    "@vitejs/plugin-react": "^5.0.2",
+    "vite": "^7.1.6"
+  }
+}

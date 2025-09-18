@@ -9,7 +9,8 @@
 │   ├── web/          # 主 Web 应用 (React + Vite)
 │   └── admin/        # 管理后台应用
 ├── packages/
-│   └── ui/           # 共享 UI 组件库
+│   ├── ui/           # 共享 UI 组件库
+│   └── vite-config/  # 共享 Vite 配置包
 ├── turbo.json        # Turbo 配置
 ├── pnpm-workspace.yaml # pnpm workspace 配置
 └── package.json      # 根 package.json
@@ -125,6 +126,20 @@ pnpm add <package> --filter=@ra-web/ui
 2. 创建 `package.json` 文件
 3. 配置 TypeScript 和其他工具
 4. 在需要的地方引用该包
+
+### 使用共享 Vite 配置
+
+所有应用都使用 `@ra-web/vite-config` 包来统一管理 Vite 配置：
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import { createReactConfig, presets } from '@ra-web/vite-config/react'
+
+export default defineConfig(createReactConfig({
+  ...presets.web,  // 或 presets.admin
+}))
+```
 
 ## 常用命令
 

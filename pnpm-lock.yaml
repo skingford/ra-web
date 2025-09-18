@@ -38,6 +38,9 @@ importers:
       '@ra-web/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@ra-web/vite-config':
+        specifier: workspace:*
+        version: link:../../packages/vite-config
       react:
         specifier: ^19.1.1
         version: 19.1.1
@@ -53,16 +56,19 @@ importers:
         version: 19.1.9(@types/react@19.1.13)
       '@vitejs/plugin-react':
         specifier: ^5.0.2
-        version: 5.0.3(vite@7.1.6)
+        version: 5.0.3(vite@7.1.6(@types/node@22.18.6))
       vite:
         specifier: ^7.1.6
-        version: 7.1.6
+        version: 7.1.6(@types/node@22.18.6)
 
   apps/web:
     dependencies:
       '@ra-web/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@ra-web/vite-config':
+        specifier: workspace:*
+        version: link:../../packages/vite-config
       react:
         specifier: ^19.1.1
         version: 19.1.1
@@ -78,10 +84,10 @@ importers:
         version: 19.1.9(@types/react@19.1.13)
       '@vitejs/plugin-react':
         specifier: ^5.0.2
-        version: 5.0.3(vite@7.1.6)
+        version: 5.0.3(vite@7.1.6(@types/node@22.18.6))
       vite:
         specifier: ^7.1.6
-        version: 7.1.6
+        version: 7.1.6(@types/node@22.18.6)
 
   packages/ui:
     dependencies:
@@ -92,6 +98,22 @@ importers:
       '@types/react':
         specifier: ^19.1.13
         version: 19.1.13
+      typescript:
+        specifier: ~5.8.3
+        version: 5.8.3
+
+  packages/vite-config:
+    dependencies:
+      '@vitejs/plugin-react':
+        specifier: ^5.0.2
+        version: 5.0.3(vite@7.1.6(@types/node@22.18.6))
+      vite:
+        specifier: ^7.1.6
+        version: 7.1.6(@types/node@22.18.6)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.18.6
       typescript:
         specifier: ~5.8.3
         version: 5.8.3
@@ -544,6 +566,9 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  '@types/node@22.18.6':
+    resolution: {integrity: sha512-r8uszLPpeIWbNKtvWRt/DbVi5zbqZyj1PTmhRMqBMvDnaz1QpmSKujUtJLrqGZeoM8v72MfYggDceY4K1itzWQ==}
 
   '@types/react-dom@19.1.9':
     resolution: {integrity: sha512-qXRuZaOsAdXKFyOhRBg6Lqqc0yay13vN7KrIg4L7N4aaHN68ma9OK3NE1BoDFgFOTfM7zg+3/8+2n8rLUH3OKQ==}
@@ -1126,6 +1151,9 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
+  undici-types@6.21.0:
+    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
+
   update-browserslist-db@1.1.3:
     resolution: {integrity: sha512-UxhIZQ+QInVdunkDAaiazvvT/+fXL5Osr0JZlJulepYu6Jd7qJtDZjlur0emRlT71EN3ScPoE7gvsuIKKNavKw==}
     hasBin: true
@@ -1559,6 +1587,10 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
+  '@types/node@22.18.6':
+    dependencies:
+      undici-types: 6.21.0
+
   '@types/react-dom@19.1.9(@types/react@19.1.13)':
     dependencies:
       '@types/react': 19.1.13
@@ -1660,7 +1692,7 @@ snapshots:
       '@typescript-eslint/types': 8.44.0
       eslint-visitor-keys: 4.2.1
 
-  '@vitejs/plugin-react@5.0.3(vite@7.1.6)':
+  '@vitejs/plugin-react@5.0.3(vite@7.1.6(@types/node@22.18.6))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.28.4)
@@ -1668,7 +1700,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-beta.35
       '@types/babel__core': 7.20.5
       react-refresh: 0.17.0
-      vite: 7.1.6
+      vite: 7.1.6(@types/node@22.18.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -2165,6 +2197,8 @@ snapshots:
 
   typescript@5.8.3: {}
 
+  undici-types@6.21.0: {}
+
   update-browserslist-db@1.1.3(browserslist@4.26.2):
     dependencies:
       browserslist: 4.26.2
@@ -2175,7 +2209,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  vite@7.1.6:
+  vite@7.1.6(@types/node@22.18.6):
     dependencies:
       esbuild: 0.25.10
       fdir: 6.5.0(picomatch@4.0.3)
@@ -2184,6 +2218,7 @@ snapshots:
       rollup: 4.50.2
       tinyglobby: 0.2.15
     optionalDependencies:
+      '@types/node': 22.18.6
       fsevents: 2.3.3
 
   which@2.0.2:
