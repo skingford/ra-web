@@ -43,7 +43,7 @@ export const examples = {
       port,
     })
       .react()
-      .build()
+      .buildSync()
   },
 
   /**
@@ -55,7 +55,7 @@ export const examples = {
       plugins,
     })
       .react()
-      .build()
+      .buildSync()
   },
 
   /**
@@ -70,6 +70,53 @@ export const examples = {
       .host(true)
       .open(true)
       .cors(true)
+      .buildSync()
+  },
+
+  /**
+   * 推荐插件配置示例
+   */
+  withRecommendedPlugins: async (): Promise<UserConfig> => {
+    return await createViteConfig({
+      ...presets.web,
+      ...presets.recommended,
+    })
+      .react()
+      .build()
+  },
+
+  /**
+   * 自定义自动引入配置
+   */
+  customAutoImport: async (): Promise<UserConfig> => {
+    return await createViteConfig({
+      ...presets.web,
+      recommendedPlugins: {
+        autoImport: {
+          imports: ['react', 'react-router-dom', 'ahooks'],
+          dts: true,
+          eslintrc: {
+            enabled: true,
+            filepath: './.eslintrc-auto-import.json',
+            globalsPropValue: true,
+          },
+        },
+        eslint: true,
+      },
+    })
+      .react()
+      .build()
+  },
+
+  /**
+   * 完整功能配置示例
+   */
+  fullFeatures: async (): Promise<UserConfig> => {
+    return await createViteConfig({
+      ...presets.web,
+      ...presets.full,
+    })
+      .react()
       .build()
   },
 } as const

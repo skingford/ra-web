@@ -25,6 +25,22 @@
   },
   "peerDependencies": {
     "@vitejs/plugin-react": "^5.0.2",
-    "vite": "^7.1.6"
+    "vite": "^7.1.6",
+    "unplugin-auto-import": "^0.17.0",
+    "unplugin-vue-components": "^0.26.0",
+    "@unocss/vite": "^0.58.0",
+    "vite-plugin-windicss": "^1.9.0",
+    "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-mock": "^3.0.0",
+    "vite-plugin-pwa": "^0.19.0"
+  },
+  "peerDependenciesMeta": {
+    "unplugin-auto-import": { "optional": true },
+    "unplugin-vue-components": { "optional": true },
+    "@unocss/vite": { "optional": true },
+    "vite-plugin-windicss": { "optional": true },
+    "vite-plugin-eslint": { "optional": true },
+    "vite-plugin-mock": { "optional": true },
+    "vite-plugin-pwa": { "optional": true }
   }
 }

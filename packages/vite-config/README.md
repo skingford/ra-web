@@ -46,6 +46,25 @@ export default defineConfig(
 )
 ```
 
+### 🌟 推荐：使用五星级插件
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import { createConfigWithRecommendedPlugins, presets } from '@pkg/vite-config'
+
+export default defineConfig(async () => {
+  return await createConfigWithRecommendedPlugins({
+    ...presets.web,
+  })
+})
+```
+
+这将自动启用：
+- ✅ **unplugin-auto-import** - 自动引入 React hooks
+- ✅ **vite-plugin-eslint** - 开发时 ESLint 检查
+- 🔧 其他插件按需启用
+
 ## 📖 API 文档
 
 ### 核心函数
@@ -203,6 +222,81 @@ export default defineConfig(
 )
 ```
 
+## 🌟 推荐插件集成
+
+### 快速启用推荐插件
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import { createConfigWithRecommendedPlugins, presets } from '@pkg/vite-config'
+
+export default defineConfig(
+  await createConfigWithRecommendedPlugins({
+    ...presets.web,
+  })
+)
+```
+
+### 使用推荐插件预设
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import { createReactConfigAsync, presets } from '@pkg/vite-config'
+
+export default defineConfig(
+  await createReactConfigAsync({
+    ...presets.web,
+    ...presets.recommended, // 包含 autoImport + eslint
+  })
+)
+```
+
+### 自定义推荐插件配置
+
+```typescript
+// vite.config.ts
+import { defineConfig } from 'vite'
+import { createViteConfig, presets } from '@pkg/vite-config'
+
+export default defineConfig(
+  await createViteConfig({
+    ...presets.web,
+    recommendedPlugins: {
+      autoImport: {
+        imports: ['react', 'react-router-dom', 'ahooks'],
+        dts: true,
+      },
+      eslint: true,
+      unocss: {
+        shortcuts: {
+          'flex-center': 'flex items-center justify-center',
+        },
+      },
+    },
+  })
+    .react()
+    .build()
+)
+```
+
+### 链式 API 配置推荐插件
+
+```typescript
+import { defineConfig } from 'vite'
+import { createViteConfig, presets } from '@pkg/vite-config'
+
+export default defineConfig(
+  await createViteConfig(presets.web)
+    .react()
+    .autoImport() // 启用自动引入
+    .eslint()     // 启用 ESLint
+    .unocss()     // 启用 UnoCSS
+    .build()
+)
+```
+
 ## 🔧 高级用法
 
 ### 自定义插件
@@ -211,7 +305,7 @@ export default defineConfig(
 import { createViteConfig } from '@pkg/vite-config'
 import myPlugin from './my-plugin'
 
-const config = createViteConfig()
+const config = await createViteConfig()
   .react()
   .plugin(myPlugin)
   .build()
@@ -222,7 +316,7 @@ const config = createViteConfig()
 ```typescript
 import { createViteConfig, mergeConfigs } from '@pkg/vite-config'
 
-const baseConfig = createViteConfig().react().build()
+const baseConfig = await createViteConfig().react().build()
 const customConfig = {
   build: {
     rollupOptions: {
@@ -258,7 +352,19 @@ validateOptions(options) // 验证配置选项
 | `app` | `'web' \| 'admin' \| 'api'` | - | 应用类型 |
 | `env` | `'development' \| 'production'` | `'development'` | 环境类型 |
 | `plugins` | `any[]` | `[]` | 自定义插件 |
+| `recommendedPlugins` | `RecommendedPluginsOptions` | `{}` | 推荐插件配置 |
 | `extra` | `Partial<UserConfig>` | `{}` | 额外配置 |
+
+### 推荐插件选项
+
+| 选项 | 类型 | 默认值 | 描述 |
+|------|------|--------|------|
+| `autoImport` | `boolean \| object` | `false` | 自动引入插件配置 |
+| `components` | `boolean \| object` | `false` | 组件自动引入配置 |
+| `unocss` | `boolean \| object` | `false` | UnoCSS 配置 |
+| `eslint` | `boolean \| object` | `false` | ESLint 插件配置 |
+| `mock` | `boolean \| object` | `false` | Mock 插件配置 |
+| `pwa` | `boolean \| object` | `false` | PWA 插件配置 |
 
 ## 🛠️ 开发
 

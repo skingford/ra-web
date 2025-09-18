@@ -13,7 +13,35 @@ export function createViteConfig(options: ViteConfigOptions = {}): ViteConfigBui
  * 快速创建 React 应用配置
  */
 export function createReactConfig(options: ViteConfigOptions = {}): UserConfig {
-  return createViteConfig(options).react().build()
+  return createViteConfig(options).react().buildSync()
+}
+
+/**
+ * 异步创建 React 应用配置（支持推荐插件）
+ */
+export async function createReactConfigAsync(options: ViteConfigOptions = {}): Promise<UserConfig> {
+  return await createViteConfig(options).react().build()
+}
+
+/**
+ * 创建带推荐插件的配置
+ */
+export async function createConfigWithRecommendedPlugins(options: ViteConfigOptions = {}): Promise<UserConfig> {
+  const defaultRecommendedPlugins = {
+    autoImport: true,
+    eslint: true,
+    unocss: false, // 默认关闭，避免与其他 CSS 框架冲突
+  }
+
+  const configOptions = {
+    ...options,
+    recommendedPlugins: {
+      ...defaultRecommendedPlugins,
+      ...options.recommendedPlugins,
+    },
+  }
+
+  return await createViteConfig(configOptions).react().build()
 }
 
 /**

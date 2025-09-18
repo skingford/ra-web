@@ -28,6 +28,65 @@ export const SUPPORTED_PLUGINS = [
 ] as const
 
 /**
+ * 推荐的五星级插件配置
+ */
+export const RECOMMENDED_PLUGINS = {
+  autoImport: {
+    name: 'unplugin-auto-import',
+    config: {
+      imports: ['react', 'react-router-dom'] as (string | Record<string, string[]>)[],
+      dts: true,
+      eslintrc: {
+        enabled: true,
+        filepath: './.eslintrc-auto-import.json',
+        globalsPropValue: true,
+      },
+    },
+  },
+  components: {
+    name: 'unplugin-vue-components',
+    config: {
+      dts: true,
+      resolvers: [],
+    },
+  },
+  unocss: {
+    name: '@unocss/vite',
+    config: {
+      shortcuts: {
+        'flex-center': 'flex items-center justify-center',
+        'flex-col-center': 'flex flex-col items-center justify-center',
+      },
+    },
+  },
+  eslint: {
+    name: 'vite-plugin-eslint',
+    config: {
+      cache: false,
+      include: ['src/**/*.{ts,tsx,js,jsx}'],
+      exclude: ['node_modules'],
+    },
+  },
+  mock: {
+    name: 'vite-plugin-mock',
+    config: {
+      mockPath: 'mock',
+      localEnabled: true,
+      prodEnabled: false,
+    },
+  },
+  pwa: {
+    name: 'vite-plugin-pwa',
+    config: {
+      registerType: 'autoUpdate',
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+      },
+    },
+  },
+} as const
+
+/**
  * 构建目标
  */
 export const BUILD_TARGET = 'esnext' as const

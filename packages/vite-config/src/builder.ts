@@ -1,6 +1,7 @@
 import type { UserConfig } from 'vite'
-import type { ViteConfigOptions } from './types.js'
+import type { ViteConfigOptions, RecommendedPluginsOptions } from './types.js'
 import { DEFAULT_CONFIG, DEFAULT_PORTS, BUILD_TARGET, MINIFIER, COMMON_DEPS } from './constants.js'
+import { createRecommendedPlugins } from './plugins.js'
 
 /**
  * Vite 配置构建器
@@ -146,6 +147,50 @@ export class ViteConfigBuilder {
   }
 
   /**
+   * 启用推荐插件
+   */
+  async withRecommendedPlugins(): Promise<this> {
+    if (this.options.recommendedPlugins) {
+      const recommendedPlugins = await createRecommendedPlugins(this.options.recommendedPlugins)
+      this.config.plugins = [...(this.config.plugins || []), ...recommendedPlugins]
+    }
+    return this
+  }
+
+  /**
+   * 启用自动引入插件
+   */
+  autoImport(options?: RecommendedPluginsOptions['autoImport']): this {
+    if (!this.options.recommendedPlugins) {
+      this.options.recommendedPlugins = {}
+    }
+    this.options.recommendedPlugins.autoImport = options ?? true
+    return this
+  }
+
+  /**
+   * 启用 UnoCSS 插件
+   */
+  unocss(options?: RecommendedPluginsOptions['unocss']): this {
+    if (!this.options.recommendedPlugins) {
+      this.options.recommendedPlugins = {}
+    }
+    this.options.recommendedPlugins.unocss = options ?? true
+    return this
+  }
+
+  /**
+   * 启用 ESLint 插件
+   */
+  eslint(options?: RecommendedPluginsOptions['eslint']): this {
+    if (!this.options.recommendedPlugins) {
+      this.options.recommendedPlugins = {}
+    }
+    this.options.recommendedPlugins.eslint = options ?? true
+    return this
+  }
+
+  /**
    * 合并额外配置
    */
   merge(config: Partial<UserConfig>): this {
@@ -156,7 +201,29 @@ export class ViteConfigBuilder {
   /**
    * 构建最终配置
    */
-  build(): UserConfig {
+  async build(): Promise<UserConfig> {
+    // 应用推荐插件
+    if (this.options.recommendedPlugins) {
+      await this.withRecommendedPlugins()
+    }
+
+    // 应用额外配置
+    if (this.options.extra) {
+      this.config = { ...this.config, ...this.options.extra }
+    }
+
+    // 应用自定义插件
+    if (this.options.plugins) {
+      this.config.plugins = [...(this.config.plugins || []), ...this.options.plugins]
+    }
+
+    return this.config
+  }
+
+  /**
+   * 同步构建配置（不包含推荐插件）
+   */
+  buildSync(): UserConfig {
     // 应用额外配置
     if (this.options.extra) {
       this.config = { ...this.config, ...this.options.extra }

@@ -44,4 +44,37 @@ export const presets: Presets = {
     open: false,
     cors: false,
   },
+
+  /** 推荐插件预设配置 */
+  recommended: {
+    recommendedPlugins: {
+      autoImport: {
+        imports: ['react', 'react-router-dom'],
+        dts: true,
+        eslintrc: {
+          enabled: true,
+          filepath: './.eslintrc-auto-import.json',
+          globalsPropValue: true,
+        },
+      },
+      eslint: {
+        cache: false,
+        include: ['src/**/*.{ts,tsx,js,jsx}'],
+        exclude: ['node_modules'],
+      },
+      unocss: false, // 默认关闭，避免冲突
+    },
+  },
+
+  /** 完整功能预设配置 */
+  full: {
+    recommendedPlugins: {
+      autoImport: true,
+      components: true,
+      unocss: true,
+      eslint: true,
+      mock: true,
+      pwa: false, // PWA 通常需要特殊配置
+    },
+  },
 } as const
