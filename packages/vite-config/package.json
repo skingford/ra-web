@@ -2,20 +2,12 @@
   "name": "@pkg/vite-config",
   "version": "0.0.0",
   "type": "module",
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./src/index.js",
-      "types": "./src/index.d.ts"
-    },
-    "./react": {
-      "import": "./src/react.js",
-      "types": "./src/react.d.ts"
-    },
-    "./base": {
-      "import": "./src/base.js",
-      "types": "./src/base.d.ts"
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
