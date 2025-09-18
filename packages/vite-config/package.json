@@ -1,5 +1,5 @@
 {
-  "name": "@ra-web/vite-config",
+  "name": "@pkg/vite-config",
   "version": "0.0.0",
   "type": "module",
   "main": "./src/index.js",

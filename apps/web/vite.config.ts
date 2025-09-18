@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import { createReactConfig, presets } from '@ra-web/vite-config/react'
+import { createReactConfig, presets } from '@pkg/vite-config/react'
 
 // https://vite.dev/config/
 export default defineConfig(createReactConfig({

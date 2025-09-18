@@ -1,4 +1,4 @@
-# @ra-web/vite-config
+# @pkg/vite-config
 
 共享的 Vite 配置包，用于统一管理 monorepo 中各个应用的构建配置。
 
@@ -12,7 +12,7 @@
 ## 安装
 
 ```bash
-pnpm add @ra-web/vite-config --filter=your-app
+pnpm add @pkg/vite-config --filter=your-app
 ```
 
 ## 使用方法
@@ -22,7 +22,7 @@ pnpm add @ra-web/vite-config --filter=your-app
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite'
-import { createReactConfig, presets } from '@ra-web/vite-config/react'
+import { createReactConfig, presets } from '@pkg/vite-config/react'
 
 export default defineConfig(createReactConfig({
   ...presets.web,  // 使用 web 应用预设
@@ -34,7 +34,7 @@ export default defineConfig(createReactConfig({
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite'
-import { createReactConfig } from '@ra-web/vite-config/react'
+import { createReactConfig } from '@pkg/vite-config/react'
 
 export default defineConfig(createReactConfig({
   port: 3000,
@@ -47,7 +47,7 @@ export default defineConfig(createReactConfig({
 ### 使用预设配置
 
 ```typescript
-import { presets } from '@ra-web/vite-config/react'
+import { presets } from '@pkg/vite-config/react'
 
 // 可用的预设配置
 presets.web          // Web 应用 (端口 5173)
@@ -101,7 +101,7 @@ interface ReactConfigOptions {
 ```typescript
 // apps/web/vite.config.ts
 import { defineConfig } from 'vite'
-import { createReactConfig, presets } from '@ra-web/vite-config/react'
+import { createReactConfig, presets } from '@pkg/vite-config/react'
 
 export default defineConfig(createReactConfig({
   ...presets.web,
@@ -112,7 +112,7 @@ export default defineConfig(createReactConfig({
 ```typescript
 // apps/admin/vite.config.ts
 import { defineConfig } from 'vite'
-import { createReactConfig, presets } from '@ra-web/vite-config/react'
+import { createReactConfig, presets } from '@pkg/vite-config/react'
 
 export default defineConfig(createReactConfig({
   ...presets.admin,
@@ -123,7 +123,7 @@ export default defineConfig(createReactConfig({
 ```typescript
 // apps/custom/vite.config.ts
 import { defineConfig } from 'vite'
-import { createReactConfig } from '@ra-web/vite-config/react'
+import { createReactConfig } from '@pkg/vite-config/react'
 
 export default defineConfig(createReactConfig({
   port: 8080,

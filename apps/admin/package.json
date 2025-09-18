@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@ra-web/ui": "workspace:*",
-    "@ra-web/vite-config": "workspace:*",
+    "@pkg/vite-config": "workspace:*",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

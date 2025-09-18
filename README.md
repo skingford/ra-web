@@ -129,12 +129,12 @@ pnpm add <package> --filter=@ra-web/ui
 
 ### 使用共享 Vite 配置
 
-所有应用都使用 `@ra-web/vite-config` 包来统一管理 Vite 配置：
+所有应用都使用 `@pkg/vite-config` 包来统一管理 Vite 配置：
 
 ```typescript
 // vite.config.ts
 import { defineConfig } from 'vite'
-import { createReactConfig, presets } from '@ra-web/vite-config/react'
+import { createReactConfig, presets } from '@pkg/vite-config/react'
 
 export default defineConfig(createReactConfig({
   ...presets.web,  // 或 presets.admin
