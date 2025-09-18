@@ -4,11 +4,21 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "echo 'Admin app dev script - customize as needed'",
-    "build": "echo 'Admin app build script - customize as needed'",
-    "lint": "echo 'Admin app lint script - customize as needed'",
-    "type-check": "echo 'Admin app type-check script - customize as needed'"
+    "dev": "vite --port 5174",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview --port 5174",
+    "type-check": "tsc --noEmit"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@ra-web/ui": "workspace:*",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "vite": "^7.1.6"
+  }
 }

@@ -1,0 +1,76 @@
+.admin-app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.main-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.admin-content {
+  padding: 20px;
+}
+
+.admin-content h1 {
+  color: #333;
+  margin-bottom: 16px;
+  font-size: 2rem;
+}
+
+.admin-content p {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 1.1rem;
+}
+
+.counter-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.counter-section p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+}
+
+.feature-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.feature-card li {
+  padding: 8px 0;
+  border-bottom: 1px solid #e9ecef;
+  color: #495057;
+}
+
+.feature-card li:last-child {
+  border-bottom: none;
+}
+
+.feature-card li::before {
+  content: "✓ ";
+  color: #28a745;
+  font-weight: bold;
+}

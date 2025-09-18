@@ -33,7 +33,30 @@ importers:
         specifier: ^8.43.0
         version: 8.44.0(eslint@9.35.0)(typescript@5.8.3)
 
-  apps/admin: {}
+  apps/admin:
+    dependencies:
+      '@ra-web/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      react:
+        specifier: ^19.1.1
+        version: 19.1.1
+      react-dom:
+        specifier: ^19.1.1
+        version: 19.1.1(react@19.1.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.1.13
+        version: 19.1.13
+      '@types/react-dom':
+        specifier: ^19.1.9
+        version: 19.1.9(@types/react@19.1.13)
+      '@vitejs/plugin-react':
+        specifier: ^5.0.2
+        version: 5.0.3(vite@7.1.6)
+      vite:
+        specifier: ^7.1.6
+        version: 7.1.6
 
   apps/web:
     dependencies:
