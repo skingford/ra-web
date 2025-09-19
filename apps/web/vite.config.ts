@@ -1,9 +1,7 @@
 import { defineConfig } from 'vite'
-import { createReactConfig, presets } from '@pkg/vite-config'
+import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig(
-  createReactConfig({
-    ...presets.web,
-  })
-)
+export default defineConfig({
+  plugins: [react()],
+})
