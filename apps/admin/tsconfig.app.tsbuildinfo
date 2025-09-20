@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/example-browser.ts","./src/main.tsx","./src/vite-env.d.ts"],"version":"5.8.3"}
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/lib/api.ts","./src/providers/index.tsx","./src/stores/authstore.ts","./src/stores/types.ts","./src/stores/uistore.ts"],"version":"5.8.3"}

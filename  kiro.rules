@@ -1,0 +1,178 @@
+# kiro.rules for Modern Admin Dashboard
+# 本项目基于 React 19 + TypeScript 技术栈
+
+# 1. 项目基本上下文与核心技术栈
+[rules]
+language = "TypeScript"
+framework = "React"
+react_version = "19" # 指定使用 React 19 的最新特性
+
+# 2. 核心工具链与构建配置
+[rules.tooling]
+build_tool = "Vite"
+plugins = [
+  "unplugin-auto-import" # 配置自动导入
+]
+
+# 3. 严格的代码风格与格式化规则
+[rules.coding_style]
+indent_style = "spaces"
+indent_size = 2
+quotes = "double" # 推荐TypeScript中使用双引号，与默认tsconfig一致
+semicolons = true # TypeScript项目推荐使用分号
+trailing_comma = "es5"
+max_line_length = 100
+newline_at_end_of_file = true
+
+# 4. 命名约定 (保持高度一致性)
+[rules.naming_conventions]
+variable_case = "camelCase"
+function_case = "camelCase"
+component_case = "PascalCase" # 组件名必须大驼峰
+interface_case = "PascalCase" # 接口名必须大驼峰
+type_case = "PascalCase" # 类型别名必须大驼峰
+generic_parameter_case = "PascalCase" # 泛型参数推荐大驼峰，如 TData
+constant_case = "UPPER_SNAKE_CASE" # 常量全大写蛇形Case
+boolean_variable_prefix = "is, has, should, can" # 布尔变量必须有前缀，如 isVisible
+hook_naming_pattern = "use*" # Hook必须use前缀
+file_naming_case = "kebab-case" # 文件名使用短横线命名法
+
+# 5. 依赖、导入与路径规则
+[rules.imports]
+# 指定必须使用的库及其用途
+preferred_libraries = [
+  "react -> ^19.0.0",
+  "@chakra-ui/react -> 作为核心UI组件库",
+  "@chakra-ui/next-js -> 用于Next.js项目(若适用)",
+  "@tanstack/react-query -> 用于数据请求和缓存",
+  "zustand -> 用于轻量级状态管理",
+  "react-hook-form -> 用于表单处理(如需)",
+  "date-fns -> 用于日期操作",
+  "axios -> 用于HTTP请求"
+]
+# 导入排序规则：React相关 -> 第三方库 -> 类型定义 -> 内部模块 -> 相对路径 -> CSS
+import_order = ["^react", "^@?chakra", "^@tanstack", "^zustand", "^@", "^[.]"]
+path_aliases = [
+  "@/* -> ./src/*", # 绝对路径别名
+  "@/components/* -> ./src/components/*",
+  "@/pages/* -> ./src/pages/*",
+  "@/hooks/* -> ./src/hooks/*",
+  "@/stores/* -> ./src/stores/*",
+  "@/types/* -> ./src/types/*",
+  "@/utils/* -> ./src/utils/*",
+  "@/lib/* -> ./src/lib/*"
+]
+# 禁止使用默认导出，提倡命名导出以提高可读性和重构能力
+prefer_named_exports = true
+
+# 6. React 特定开发规范
+[rules.react]
+function_components = true # 必须使用函数式组件
+prefer_arrow_functions = true # 组件使用箭头函数
+hook_usage = "strict" # 必须遵循Hook规则
+state_management = [
+  "local -> useState",
+  "global -> zustand" # 全局状态必须使用Zustand
+]
+event_handler_prefix = "handle" # 事件处理函数以handle前缀，如 handleSubmit
+props_destructuring = true # 必须解构props
+
+# 7. TypeScript 严格类型规范
+[rules.typescript]
+strict_mode = true
+no_any = true # 严禁使用 any 类型
+prefer_interface = false # 推荐使用 type 而非 interface (可根据团队偏好调整)
+required_typing = [
+  "function-parameters",
+  "function-return-types", # 函数必须有返回类型注解
+  "variable-declarations" # 变量必须有类型注解
+]
+generic_usage = "encouraged" # 鼓励使用泛型
+
+# 8. 性能与优化规则
+[rules.performance]
+code_splitting = [
+  "route-level -> 使用React.lazy + Suspense实现路由级按需加载",
+  "component-level -> 使用React.memo包装纯函数组件避免重渲染"
+]
+memoization = [
+  "useCallback -> 对于传递给子组件的函数",
+  "useMemo -> 对于昂贵的计算值"
+]
+bundling = "vite" # 使用Vite进行构建和优化
+
+# 9. 核心功能实现规范
+[rules.features.admin_dashboard]
+# 系统架构规范
+architecture = [
+  "feature-based -> 功能模块化组织",
+  "layouts -> 提供基础布局组件 (Header, Sidebar, MainContent)",
+  "pages -> 页面级组件",
+  "components -> 可复用UI组件",
+  "hooks -> 自定义Hook封装业务逻辑",
+  "stores -> Zustand状态存储"
+]
+
+# 数据操作规范
+crud_implementation = [
+  "list -> 使用TanStack Query的useQuery获取列表数据，配合分号和过滤",
+  "create -> 使用useMutation实现创建，并处理缓存更新",
+  "update -> 使用useMutation实现更新，乐观更新UI",
+  "delete -> 使用useMutation实现删除，并处理缓存更新",
+  "forms -> 使用Chakra UI的FormControl与React Hook Form集成"
+]
+
+# 响应式设计规范
+responsive_design = [
+  "chakra-breakpoints -> 使用Chakra UI的useBreakpointValue/hook",
+  "mobile-first -> 移动优先的响应式策略",
+  "grid-and-flex -> 使用Chakra UI的Grid和Flex组件进行布局"
+]
+
+# 权限控制规范
+permission_system = [
+  "role-based -> 基于角色的访问控制(RBAC)",
+  "component-level -> 封装权限包装组件，如 <Can I='delete' a='user'>",
+  "hook-based -> 使用usePermissions Hook进行权限判断"
+]
+
+# 数据可视化规范
+data_visualization = [
+  "charts -> 集成Recharts或Victory等库",
+  "dashboard -> 提供数据概览组件",
+  "skeleton-loading -> 使用Chakra UI的Skeleton组件提供加载状态"
+]
+
+# 10. 错误处理与用户体验
+[rules.error_handling]
+api_errors = [
+  "tanstack-query -> 使用useQuery/useMutation的onError回调",
+  "global-error-boundary -> 实现React错误边界捕获渲染错误",
+  "toast-notifications -> 使用Chakra UI的useToast显示用户友好的错误信息"
+]
+validation_errors = "display-inline" # 表单验证错误在字段下方显示
+
+# 11. 禁止和避免的模式
+[rules.avoid]
+patterns = [
+  "any-type", # 严禁any
+  "console.log-in-production", # 禁止提交console.log
+  "index-as-key", # 禁止用数组索引做key
+  "inline-styles", # 避免内联样式，使用Chakra的sx或styleProps
+  "prop-drilling", # 避免属性钻取，使用Zustand或Context
+  "large-components", # 避免过大组件，应拆分为更小单元
+  "non-memoized-callbacks-in-props" # 避免给子组件传递未记忆化的回调
+]
+
+# 12. 自定义最佳实践指令
+[rules.general]
+best_practices = [
+  "所有组件必须使用TypeScript，并提供完整的Props类型定义",
+  "自定义Hook必须遵循useXxx命名规范，并清晰定义返回元组类型",
+  "Zustand Store必须使用Immer支持不可变更新",
+  "TanStack Query必须配置全局的QueryClient并提供默认配置",
+  "Chakra UI主题必须进行自定义扩展以符合项目设计系统",
+  "所有API调用必须被封装在自定义Hook或Service模块中",
+  "实现404、500等错误边界页面",
+  "为所有交互元素提供清晰的loading和disabled状态"
+]
