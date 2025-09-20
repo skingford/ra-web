@@ -94,8 +94,8 @@
     - Test form builder with various field types and validations
     - _Requirements: 4.2, 8.3, 2.1_
 
-- [ ] 6. Implement data visualization system
-  - [ ] 6.1 Create dashboard widget framework
+- [-] 6. Implement data visualization system
+  - [x] 6.1 Create dashboard widget framework
     - Build modular widget system with different chart types
     - Implement real-time data updates using TanStack Query
     - Create customizable dashboard layout system

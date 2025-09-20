@@ -1,6 +1,7 @@
 import { Box, Button, Card, Heading, Text, VStack, HStack, Tabs } from '@chakra-ui/react'
 import { useState } from 'react'
 import { ThemeDemo } from './components/ThemeDemo'
+import { Dashboard } from './pages/Dashboard'
 import './App.css'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           </Heading>
           <Tabs.List>
             <Tabs.Trigger value="dashboard">仪表板</Tabs.Trigger>
+            <Tabs.Trigger value="widgets">数据可视化</Tabs.Trigger>
             <Tabs.Trigger value="theme">主题演示</Tabs.Trigger>
           </Tabs.List>
         </Box>
@@ -85,6 +87,10 @@ function App() {
               </Card.Body>
             </Card.Root>
           </VStack>
+        </Tabs.Content>
+
+        <Tabs.Content value="widgets">
+          <Dashboard />
         </Tabs.Content>
 
         <Tabs.Content value="theme">
