@@ -314,7 +314,15 @@ export default function ActionsExample() {
       {/* 代码示例 */}
       <div className="code-example">
         <h3>核心 API</h3>
-        <pre>{`// 1. useActionState - 管理 Action 状态
+        <pre style={{ 
+          background: '#1e293b', 
+          color: '#e2e8f0', 
+          padding: '1.5rem', 
+          borderRadius: '8px',
+          fontSize: '0.875rem',
+          lineHeight: '1.5',
+          overflow: 'auto'
+        }}>{`// 1. useActionState - 管理 Action 状态
 const [state, formAction] = useActionState(actionFn, initialState)
 
 // 2. useTransition - 管理提交状态
@@ -360,8 +368,18 @@ const handleSubmit = (formData) => {
         <h2 className="example-title">🔄 与传统方式对比</h2>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '1rem' }}>
           <div>
-            <h4 style={{ color: '#ef4444' }}>传统方式</h4>
-            <pre style={{ fontSize: '0.75rem', background: '#fef2f2', padding: '1rem', borderRadius: '6px' }}>{`const [loading, setLoading] = useState(false)
+            <h4 style={{ color: '#ef4444', marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>传统方式</h4>
+            <pre style={{ 
+              fontSize: '0.8rem', 
+              background: '#1e293b', 
+              color: '#e2e8f0',
+              padding: '1.25rem', 
+              borderRadius: '8px',
+              lineHeight: '1.4',
+              overflow: 'auto',
+              border: '2px solid #ef4444',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}>{`const [loading, setLoading] = useState(false)
 const [error, setError] = useState(null)
 const [data, setData] = useState(null)
 
@@ -382,8 +400,18 @@ const handleSubmit = async (e) => {
           </div>
           
           <div>
-            <h4 style={{ color: '#10b981' }}>React 19 Actions</h4>
-            <pre style={{ fontSize: '0.75rem', background: '#f0fdf4', padding: '1rem', borderRadius: '6px' }}>{`const [isPending, startTransition] = useTransition()
+            <h4 style={{ color: '#10b981', marginBottom: '1rem', fontSize: '1.1rem', fontWeight: '600' }}>React 19 Actions</h4>
+            <pre style={{ 
+              fontSize: '0.8rem', 
+              background: '#1e293b', 
+              color: '#e2e8f0',
+              padding: '1.25rem', 
+              borderRadius: '8px',
+              lineHeight: '1.4',
+              overflow: 'auto',
+              border: '2px solid #10b981',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            }}>{`const [isPending, startTransition] = useTransition()
 const [state, formAction] = useActionState(
   async (prevState, formData) => {
     try {

@@ -13,7 +13,15 @@ function RefCleanupExample() {
 
       <div className="code-example">
         <h3>核心用法</h3>
-        <pre>{`// React 19 新特性：ref 清理函数
+        <pre style={{ 
+          background: '#1e293b', 
+          color: '#e2e8f0', 
+          padding: '1.5rem', 
+          borderRadius: '8px',
+          fontSize: '0.875rem',
+          lineHeight: '1.5',
+          overflow: 'auto'
+        }}>{`// React 19 新特性：ref 清理函数
 const ref = useRef((node) => {
   if (node) {
     // 设置逻辑

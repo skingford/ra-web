@@ -305,7 +305,15 @@ export default function SuspenseExample() {
       {/* 代码示例 */}
       <div className="code-example">
         <h3>核心用法</h3>
-        <pre>{`// 1. 基础 Suspense 用法
+        <pre style={{ 
+          background: '#1e293b', 
+          color: '#e2e8f0', 
+          padding: '1.5rem', 
+          borderRadius: '8px',
+          fontSize: '0.875rem',
+          lineHeight: '1.5',
+          overflow: 'auto'
+        }}>{`// 1. 基础 Suspense 用法
 <Suspense fallback={<Loading />}>
   <AsyncComponent />
 </Suspense>

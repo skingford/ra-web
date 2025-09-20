@@ -16,7 +16,7 @@ const fetchUserData = (userId: number): Promise<{ id: number; name: string; emai
 // 创建一个 Context 用于演示 use Hook 读取 Context
 const ThemeContext = createContext<{ theme: string; toggleTheme: () => void }>({
   theme: 'light',
-  toggleTheme: () => {}
+  toggleTheme: () => { }
 })
 
 // 使用 use Hook 读取 Promise 的组件
@@ -24,7 +24,7 @@ function UserProfile({ userPromise }: { userPromise: Promise<any> }) {
   // 🎯 关键特性：use Hook 可以直接读取 Promise
   // 不需要 useEffect 和 useState 的组合
   const user = use(userPromise)
-  
+
   return (
     <div className="example-container">
       <h3 className="example-title">用户信息</h3>
@@ -39,9 +39,9 @@ function UserProfile({ userPromise }: { userPromise: Promise<any> }) {
 function ThemeDisplay() {
   // 🎯 关键特性：use Hook 可以读取 Context，无需 useContext
   const { theme, toggleTheme } = use(ThemeContext)
-  
+
   return (
-    <div className="example-container" style={{ 
+    <div className="example-container" style={{
       background: theme === 'dark' ? '#1f2937' : '#f9fafb',
       color: theme === 'dark' ? '#f9fafb' : '#1f2937'
     }}>
@@ -56,14 +56,14 @@ function ThemeDisplay() {
 // 条件性使用 use Hook 的示例
 function ConditionalDataLoader({ shouldLoad }: { shouldLoad: boolean }) {
   let data = null
-  
+
   if (shouldLoad) {
     // 🎯 关键特性：use Hook 可以在条件语句中使用
     // 这在传统 Hook 中是不被允许的
     const promise = fetchUserData(Math.floor(Math.random() * 100))
     data = use(promise)
   }
-  
+
   return (
     <div className="example-container">
       <h3 className="example-title">条件性数据加载</h3>
@@ -83,10 +83,10 @@ export default function UseHookExample() {
   const [userId, setUserId] = useState(1)
   const [theme, setTheme] = useState('light')
   const [shouldLoadConditional, setShouldLoadConditional] = useState(false)
-  
+
   // 创建 Promise 用于演示
   const userPromise = fetchUserData(userId)
-  
+
   const toggleTheme = () => {
     setTheme(prev => prev === 'light' ? 'dark' : 'light')
   }
@@ -102,7 +102,15 @@ export default function UseHookExample() {
       {/* 代码示例 */}
       <div className="code-example">
         <h3>核心用法</h3>
-        <pre>{`// 1. 读取 Promise
+        <pre style={{
+          background: '#1e293b',
+          color: '#e2e8f0',
+          padding: '1.5rem',
+          borderRadius: '8px',
+          fontSize: '0.875rem',
+          lineHeight: '1.5',
+          overflow: 'auto'
+        }}>{`// 1. 读取 Promise
 const user = use(userPromise)
 
 // 2. 读取 Context  
@@ -121,13 +129,13 @@ if (shouldLoad) {
           use Hook 可以直接读取 Promise，自动处理 pending 状态。
           需要配合 Suspense 使用来处理加载状态。
         </p>
-        
+
         <div style={{ marginBottom: '1rem' }}>
           <label>
-            用户 ID: 
-            <input 
-              type="number" 
-              value={userId} 
+            用户 ID:
+            <input
+              type="number"
+              value={userId}
               onChange={(e) => setUserId(Number(e.target.value))}
               className="input"
               style={{ marginLeft: '0.5rem', width: '100px' }}
@@ -155,10 +163,10 @@ if (shouldLoad) {
         <p className="example-description">
           与传统 Hook 不同，use Hook 可以在条件语句中使用，提供更大的灵活性。
         </p>
-        
+
         <div style={{ marginBottom: '1rem' }}>
-          <button 
-            className="btn" 
+          <button
+            className="btn"
             onClick={() => setShouldLoadConditional(!shouldLoadConditional)}
           >
             {shouldLoadConditional ? '停止加载' : '开始加载'}

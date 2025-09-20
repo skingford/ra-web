@@ -284,7 +284,15 @@ export default function TransitionsExample() {
       {/* 代码示例 */}
       <div className="code-example">
         <h3>核心 API</h3>
-        <pre>{`// 1. useTransition - 管理过渡状态
+        <pre style={{ 
+          background: '#1e293b', 
+          color: '#e2e8f0', 
+          padding: '1.5rem', 
+          borderRadius: '8px',
+          fontSize: '0.875rem',
+          lineHeight: '1.5',
+          overflow: 'auto'
+        }}>{`// 1. useTransition - 管理过渡状态
 const [isPending, startTransition] = useTransition()
 
 startTransition(() => {

@@ -93,7 +93,15 @@ export default function ErrorBoundaryExample() {
 
       <div className="code-example">
         <h3>核心用法</h3>
-        <pre>{`// 1. 类组件错误边界
+        <pre style={{ 
+          background: '#1e293b', 
+          color: '#e2e8f0', 
+          padding: '1.5rem', 
+          borderRadius: '8px',
+          fontSize: '0.875rem',
+          lineHeight: '1.5',
+          overflow: 'auto'
+        }}>{`// 1. 类组件错误边界
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props)

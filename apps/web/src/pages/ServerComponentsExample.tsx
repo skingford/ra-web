@@ -9,7 +9,15 @@ export default function ServerComponentsExample() {
 
       <div className="code-example">
         <h3>服务端组件示例</h3>
-        <pre>{`// 服务端组件 (在服务器上运行)
+        <pre style={{ 
+          background: '#1e293b', 
+          color: '#e2e8f0', 
+          padding: '1.5rem', 
+          borderRadius: '8px',
+          fontSize: '0.875rem',
+          lineHeight: '1.5',
+          overflow: 'auto'
+        }}>{`// 服务端组件 (在服务器上运行)
 async function ServerComponent() {
   // 可以直接在组件中进行数据获取
   const data = await fetch('https://api.example.com/data')
