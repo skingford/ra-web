@@ -4,6 +4,7 @@ export interface User {
   email: string
   name: string
   avatar?: string
+  bio?: string
   roles: Role[]
   permissions: Permission[]
   status: 'active' | 'inactive' | 'pending'
