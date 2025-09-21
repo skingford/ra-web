@@ -1,33 +1,55 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useColorMode } from "@/components/ui/color-mode"
+import { Table,ClientOnly, IconButton, Skeleton, Button, HStack } from "@chakra-ui/react"
+import { LuMoon, LuSun } from "react-icons/lu"
 import './App.css'
+
+
+const items = [
+  { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
+  { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
+  { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
+  { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
+  { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
+]
+
 
 function App() {
   const [count, setCount] = useState(0)
+  const { toggleColorMode, colorMode } = useColorMode()
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+     <Table.Root size="sm">
+      <Table.Header>
+        <Table.Row>
+          <Table.ColumnHeader>Product</Table.ColumnHeader>
+          <Table.ColumnHeader>Category</Table.ColumnHeader>
+          <Table.ColumnHeader textAlign="end">Price</Table.ColumnHeader>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+        {items.map((item) => (
+          <Table.Row key={item.id}>
+            <Table.Cell>{item.name}</Table.Cell>
+            <Table.Cell>{item.category}</Table.Cell>
+            <Table.Cell textAlign="end">{item.price}</Table.Cell>
+          </Table.Row>
+        ))}
+      </Table.Body>
+    </Table.Root>
+    <ClientOnly fallback={<Skeleton boxSize="8" />}>
+      <IconButton onClick={toggleColorMode} variant="outline" size="sm">
+        {colorMode === "light" ? <LuSun /> : <LuMoon />}
+      </IconButton>
+    </ClientOnly>
+      <HStack>
+      <Button variant="outline" onClick={toggleColorMode}>
+      Toggle Mode
+    </Button>
+      <Button>Click me</Button>
+      <Button onClick={()=>setCount(count+1)}>Click me {count}</Button>
+    </HStack>
     </>
   )
 }
