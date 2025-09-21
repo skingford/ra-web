@@ -7,6 +7,9 @@
 // 自动导入类型声明
 /// <reference path="./auto-imports.d.ts" />
 
+// 路由类型声明
+/// <reference path="./routes.d.ts" />
+
 // 全局类型声明
 declare global {
   // 可以在这里添加全局类型声明
