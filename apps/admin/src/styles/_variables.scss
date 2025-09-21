@@ -1,0 +1,61 @@
+// 颜色变量
+$primary-color: #646cff;
+$primary-hover: #535bf2;
+$primary-light: #747bff;
+
+// 背景颜色
+$bg-light: #ffffff;
+$bg-dark: #242424;
+$bg-button-light: #f9f9f9;
+$bg-button-dark: #1a1a1a;
+
+// 文字颜色
+$text-light: #213547;
+$text-dark: rgba(255, 255, 255, 0.87);
+
+// 边框和阴影
+$border-radius: 8px;
+$border-color: transparent;
+$border-hover: #646cff;
+
+// 间距
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+
+// 字体
+$font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+$font-size-base: 1em;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+
+// 过渡动画
+$transition-base: border-color 0.25s;
+$transition-fast: 0.15s;
+$transition-normal: 0.25s;
+$transition-slow: 0.3s;
+
+// 断点
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+
+// 主题相关
+$light-theme: (
+  background: $bg-light,
+  text: $text-light,
+  button-bg: $bg-button-light,
+  primary: $primary-color,
+  primary-hover: $primary-light
+);
+
+$dark-theme: (
+  background: $bg-dark,
+  text: $text-dark,
+  button-bg: $bg-button-dark,
+  primary: $primary-color,
+  primary-hover: $primary-hover
+);

@@ -1,0 +1,58 @@
+// 组件样式示例
+// 这个文件展示了如何使用全局SCSS变量和混合器
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.custom-button {
+  @include button-base;
+  
+  // 使用变量
+  background-color: $primary-color;
+  color: white;
+  
+  &:hover {
+    background-color: $primary-hover;
+  }
+  
+  // 使用混合器
+  @include mobile {
+    padding: $spacing-sm $spacing-md;
+  }
+  
+  @include desktop {
+    padding: $spacing-md $spacing-lg;
+  }
+}
+
+.theme-card {
+  padding: $spacing-lg;
+  border-radius: $border-radius;
+  @include transition(background-color);
+  
+  .light & {
+    background-color: $bg-button-light;
+    color: $text-light;
+  }
+  
+  .dark & {
+    background-color: $bg-button-dark;
+    color: $text-dark;
+  }
+}
+
+.responsive-grid {
+  display: grid;
+  gap: $spacing-md;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+  
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @include desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

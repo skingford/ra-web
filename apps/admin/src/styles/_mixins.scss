@@ -1,0 +1,71 @@
+@use 'sass:map';
+@use 'variables' as *;
+
+// 主题切换混合器
+@mixin theme($theme) {
+  @if $theme == light {
+    color-scheme: light;
+    color: map.get($light-theme, text);
+    background-color: map.get($light-theme, background);
+  } @else if $theme == dark {
+    color-scheme: dark;
+    color: map.get($dark-theme, text);
+    background-color: map.get($dark-theme, background);
+  }
+}
+
+// 按钮样式混合器
+@mixin button-theme($theme) {
+  @if $theme == light {
+    background-color: map.get($light-theme, button-bg);
+    color: map.get($light-theme, text);
+  } @else if $theme == dark {
+    background-color: map.get($dark-theme, button-bg);
+    color: map.get($dark-theme, text);
+  }
+}
+
+// 响应式混合器
+@mixin mobile {
+  @media (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$breakpoint-sm}) and (max-width: #{$breakpoint-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$breakpoint-md}) {
+    @content;
+  }
+}
+
+// 过渡动画混合器
+@mixin transition($property: all, $duration: $transition-normal, $timing: ease) {
+  transition: $property $duration $timing;
+}
+
+// 按钮基础样式混合器
+@mixin button-base {
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+  padding: 0.6em 1.2em;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  font-family: $font-family;
+  cursor: pointer;
+  @include transition(border-color);
+  
+  &:hover {
+    border-color: $border-hover;
+  }
+  
+  &:focus,
+  &:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
+}

@@ -1,0 +1,122 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+// 全局样式重置和基础样式
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: $font-family;
+  line-height: 1.5;
+  font-weight: $font-weight-normal;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 亮色主题
+:root,
+.light {
+  @include theme(light);
+}
+
+// 暗色主题
+.dark {
+  @include theme(dark);
+}
+
+// 链接样式
+a {
+  font-weight: $font-weight-medium;
+  color: $primary-color;
+  text-decoration: inherit;
+  
+  &:hover {
+    color: $primary-hover;
+  }
+}
+
+// 亮色主题链接悬停
+:root a:hover,
+.light a:hover {
+  color: $primary-light;
+}
+
+// 暗色主题链接悬停
+.dark a:hover {
+  color: $primary-hover;
+}
+
+// 基础布局
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+// 标题样式
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+// 按钮样式
+button {
+  @include button-base;
+  
+  // 亮色主题按钮
+  :root &,
+  .light & {
+    @include button-theme(light);
+  }
+  
+  // 暗色主题按钮
+  .dark & {
+    @include button-theme(dark);
+  }
+}
+
+// 卡片样式
+.card {
+  padding: $spacing-xl;
+}
+
+// 读取文档链接
+.read-the-docs {
+  color: #888;
+}
+
+// Logo动画
+.logo {
+  height: 6em;
+  padding: $spacing-lg;
+  will-change: filter;
+  @include transition(filter, 300ms);
+  
+  &:hover {
+    filter: drop-shadow(0 0 2em #{$primary-color}aa);
+  }
+  
+  &.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}

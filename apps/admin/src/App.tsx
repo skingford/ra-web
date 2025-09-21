@@ -1,8 +1,8 @@
-import { useState } from 'react'
 import { useColorMode } from "@/components/ui/color-mode"
 import { Table,ClientOnly, IconButton, Skeleton, Button, HStack } from "@chakra-ui/react"
 import { LuMoon, LuSun } from "react-icons/lu"
 import './App.css'
+import './styles/components.scss'
 
 
 const items = [
@@ -47,7 +47,7 @@ function App() {
       <Button variant="outline" onClick={toggleColorMode}>
       Toggle Mode
     </Button>
-      <Button>Click me</Button>
+      <Button className="custom-button">Custom SCSS Button</Button>
       <Button onClick={()=>setCount(count+1)}>Click me {count}</Button>
     </HStack>
     </>
