@@ -136,6 +136,8 @@ export function LoginForm() {
       justifyContent="center"
       bg="neutral.50"
       px={4}
+      role="main"
+      aria-label="Login page"
     >
       <Card.Root maxW="400px" w="full">
         <Card.Header textAlign="center" pb={6}>
@@ -148,10 +150,10 @@ export function LoginForm() {
         </Card.Header>
 
         <Card.Body>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} role="form" aria-label="Login form">
             <VStack gap={4}>
               {apiError && (
-                <Alert.Root status="error" w="full">
+                <Alert.Root status="error" w="full" role="alert" aria-live="polite">
                   <Alert.Title>Login Error</Alert.Title>
                   <Alert.Description>{apiError}</Alert.Description>
                 </Alert.Root>
@@ -165,6 +167,8 @@ export function LoginForm() {
                   onChange={handleInputChange('email')}
                   placeholder="Enter your email"
                   disabled={isSubmitting}
+                  autoComplete="email"
+                  aria-describedby={errors.email ? "email-error" : undefined}
                 />
                 <Field.ErrorText>{errors.email}</Field.ErrorText>
               </Field.Root>
@@ -177,6 +181,8 @@ export function LoginForm() {
                   onChange={handleInputChange('password')}
                   placeholder="Enter your password"
                   disabled={isSubmitting}
+                  autoComplete="current-password"
+                  aria-describedby={errors.password ? "password-error" : undefined}
                 />
                 <Field.ErrorText>{errors.password}</Field.ErrorText>
               </Field.Root>

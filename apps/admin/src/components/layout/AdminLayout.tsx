@@ -29,8 +29,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   const onOpen = () => setOpen(true)
   const onClose = () => setOpen(false)
   
-  // Determine if we should show mobile layout
+  // Responsive breakpoint values for different screen sizes
   const isMobile = useBreakpointValue({ base: true, md: false })
+  const isTablet = useBreakpointValue({ base: false, md: true, lg: false })
+  const isDesktop = useBreakpointValue({ base: false, lg: true })
   
   // Set breadcrumbs when they change
   React.useEffect(() => {
@@ -39,43 +41,63 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
     }
   }, [breadcrumbs, setBreadcrumbs])
 
-  // Handle sidebar toggle for mobile
+  // Handle sidebar toggle for different screen sizes
   const handleSidebarToggle = () => {
-    if (isMobile) {
+    if (isMobile || isTablet) {
       onOpen()
     } else {
       setSidebarCollapsed(!sidebarCollapsed)
     }
   }
 
-  // Calculate sidebar width based on collapsed state
-  const sidebarWidth = sidebarCollapsed ? '60px' : '240px'
-  const mobileSidebarWidth = '240px'
+  // Calculate sidebar width based on collapsed state and screen size
+  const sidebarWidth = useBreakpointValue({
+    base: '0px', // Hidden on mobile
+    md: '0px',   // Hidden on tablet (drawer only)
+    lg: sidebarCollapsed ? '60px' : '240px', // Collapsible on desktop
+    xl: sidebarCollapsed ? '60px' : '280px', // Wider on large screens
+  })
+  
+  const mobileSidebarWidth = useBreakpointValue({
+    base: '280px', // Full width drawer on mobile
+    md: '320px',   // Wider drawer on tablet
+  })
 
   return (
     <Box minH="100vh" bg="neutral.50" _dark={{ bg: 'neutral.900' }}>
-      {/* Desktop Sidebar */}
-      {!isMobile && (
+      {/* Desktop Sidebar - Only show on large screens */}
+      {isDesktop && (
         <Box
           position="fixed"
           left={0}
           top={0}
           w={sidebarWidth}
           h="100vh"
-          transition="width 0.2s"
+          transition="width 0.3s ease-in-out"
           zIndex={10}
+          role="navigation"
+          aria-label="Main navigation"
+          id="navigation"
         >
           <Sidebar collapsed={sidebarCollapsed} />
         </Box>
       )}
 
-      {/* Mobile Drawer */}
-      {isMobile && (
+      {/* Mobile/Tablet Drawer */}
+      {(isMobile || isTablet) && (
         <Drawer.Root open={open} onOpenChange={setOpen}>
           <Drawer.Backdrop />
           <Drawer.Positioner>
-            <Drawer.Content maxW={mobileSidebarWidth}>
-              <Sidebar collapsed={false} onClose={onClose} />
+            <Drawer.Content 
+              maxW={mobileSidebarWidth}
+              role="navigation"
+              aria-label="Main navigation"
+              // Add touch-friendly gestures
+              style={{
+                touchAction: 'pan-y',
+              }}
+            >
+              <Sidebar collapsed={false} onClose={onClose} isMobile={isMobile} />
             </Drawer.Content>
           </Drawer.Positioner>
         </Drawer.Root>
@@ -83,9 +105,10 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
 
       {/* Main Content Area */}
       <Box
-        ml={isMobile ? 0 : sidebarWidth}
-        transition="margin-left 0.2s"
+        ml={isDesktop ? sidebarWidth : 0}
+        transition="margin-left 0.3s ease-in-out"
         minH="100vh"
+        role="main"
       >
         {/* Header */}
         <Header
@@ -93,15 +116,36 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
           actions={actions}
           onMenuClick={handleSidebarToggle}
           showMenuButton={true}
+          isMobile={isMobile}
         />
 
-        {/* Breadcrumbs */}
-        <Box px={6} py={3} bg="white" borderBottom="1px" borderColor="neutral.200" _dark={{ bg: 'neutral.800', borderColor: 'neutral.700' }}>
+        {/* Breadcrumbs - Responsive padding */}
+        <Box 
+          px={{ base: 4, md: 6 }} 
+          py={{ base: 2, md: 3 }} 
+          bg="white" 
+          borderBottom="1px" 
+          borderColor="neutral.200" 
+          _dark={{ bg: 'neutral.800', borderColor: 'neutral.700' }}
+          // Hide on very small screens to save space
+          display={{ base: breadcrumbs && breadcrumbs.length > 1 ? 'block' : 'none', md: 'block' }}
+          role="navigation"
+          aria-label="Breadcrumb navigation"
+        >
           <Breadcrumbs />
         </Box>
 
-        {/* Page Content */}
-        <Box p={6}>
+        {/* Page Content - Responsive padding */}
+        <Box 
+          id="main-content"
+          p={{ base: 4, md: 6 }}
+          // Ensure content doesn't get too wide on large screens
+          maxW={{ base: '100%', '2xl': '1400px' }}
+          mx="auto"
+          tabIndex={-1}
+          role="main"
+          aria-label={title ? `${title} content` : 'Main content'}
+        >
           {children}
         </Box>
       </Box>

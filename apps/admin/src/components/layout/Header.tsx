@@ -13,7 +13,6 @@ import {
   Avatar,
   Badge,
   HStack,
-  useColorMode,
   Tooltip,
 } from '@chakra-ui/react'
 import {
@@ -34,6 +33,7 @@ interface HeaderProps {
   actions?: React.ReactNode
   onMenuClick: () => void
   showMenuButton?: boolean
+  isMobile?: boolean
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -41,8 +41,8 @@ export const Header: React.FC<HeaderProps> = ({
   actions,
   onMenuClick,
   showMenuButton = true,
+  isMobile = false,
 }) => {
-  const { colorMode, toggleColorMode } = useColorMode()
   const { notifications, theme, toggleTheme } = useUIStore()
   const { user, logout } = useAuthStore()
 
@@ -51,7 +51,6 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleThemeToggle = () => {
     toggleTheme()
-    toggleColorMode()
   }
 
   const handleLogout = () => {
@@ -62,58 +61,81 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <Box
+      as="header"
       bg="white"
       borderBottom="1px"
       borderColor="neutral.200"
-      px={6}
-      py={3}
+      px={{ base: 4, md: 6 }}
+      py={{ base: 2, md: 3 }}
       position="sticky"
       top={0}
       zIndex={5}
       _dark={{ bg: 'neutral.800', borderColor: 'neutral.700' }}
+      // Add safe area for mobile devices with notches
+      paddingTop={{ base: 'env(safe-area-inset-top, 8px)', md: 3 }}
+      role="banner"
+      aria-label="Page header"
     >
-      <Flex align="center" justify="space-between">
+      <Flex align="center" justify="space-between" minH="48px">
         {/* Left Section */}
-        <Flex align="center" gap={4}>
+        <Flex align="center" gap={{ base: 2, md: 4 }} flex={1} minW={0}>
           {showMenuButton && (
             <IconButton
-              aria-label="切换菜单"
+              aria-label="Toggle navigation menu"
+              aria-expanded="false"
               children={<FiMenu />}
               variant="ghost"
-              size="sm"
+              size={isMobile ? "md" : "sm"}
               onClick={onMenuClick}
+              // Larger touch target on mobile
+              minW={isMobile ? "44px" : "auto"}
+              minH={isMobile ? "44px" : "auto"}
             />
           )}
           
           {title && (
-            <Text fontSize="lg" fontWeight="semibold" color="neutral.900" _dark={{ color: 'neutral.100' }}>
+            <Text 
+              fontSize={{ base: "md", md: "lg" }} 
+              fontWeight="semibold" 
+              color="neutral.900" 
+              _dark={{ color: 'neutral.100' }}
+              // Truncate long titles on mobile
+              noOfLines={1}
+              flex={1}
+            >
               {title}
             </Text>
           )}
         </Flex>
 
-        {/* Center Section - Actions */}
+        {/* Center Section - Actions (hide on mobile if too crowded) */}
         {actions && (
-          <Flex align="center" gap={2}>
+          <Flex 
+            align="center" 
+            gap={2}
+            display={{ base: 'none', lg: 'flex' }}
+          >
             {actions}
           </Flex>
         )}
 
         {/* Right Section */}
-        <Flex align="center" gap={2}>
+        <Flex align="center" gap={{ base: 1, md: 2 }} flex="0 0 auto">
           {/* Theme Toggle */}
           <Tooltip.Root>
             <Tooltip.Trigger asChild>
               <IconButton
-                aria-label="切换主题"
+                aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`}
                 children={theme === 'light' ? <FiMoon /> : <FiSun />}
                 variant="ghost"
-                size="sm"
+                size={isMobile ? "md" : "sm"}
                 onClick={handleThemeToggle}
+                minW={isMobile ? "44px" : "auto"}
+                minH={isMobile ? "44px" : "auto"}
               />
             </Tooltip.Trigger>
             <Tooltip.Content>
-              {theme === 'light' ? '切换到深色模式' : '切换到浅色模式'}
+              {theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             </Tooltip.Content>
           </Tooltip.Root>
 
@@ -121,9 +143,12 @@ export const Header: React.FC<HeaderProps> = ({
           <MenuRoot>
             <MenuTrigger asChild>
               <IconButton
-                aria-label="通知"
+                aria-label={`Notifications ${unreadCount > 0 ? `(${unreadCount} unread)` : ''}`}
                 variant="ghost"
-                size="sm"
+                size={isMobile ? "md" : "sm"}
+                minW={isMobile ? "44px" : "auto"}
+                minH={isMobile ? "44px" : "auto"}
+                aria-describedby={unreadCount > 0 ? "notification-count" : undefined}
               >
                 <Box position="relative">
                   <FiBell />
@@ -134,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
                       right="-2px"
                       colorScheme="red"
                       borderRadius="full"
-                      boxSize="18px"
+                      boxSize={isMobile ? "20px" : "18px"}
                       fontSize="xs"
                       display="flex"
                       alignItems="center"
@@ -146,7 +171,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </Box>
               </IconButton>
             </MenuTrigger>
-            <MenuContent maxW="300px">
+            <MenuContent maxW={{ base: "90vw", md: "300px" }}>
               <Box px={3} py={2} borderBottom="1px" borderColor="neutral.200" _dark={{ borderColor: 'neutral.700' }}>
                 <Text fontWeight="semibold" fontSize="sm">
                   通知 {unreadCount > 0 && `(${unreadCount})`}
@@ -202,15 +227,17 @@ export const Header: React.FC<HeaderProps> = ({
             <MenuTrigger asChild>
               <Button
                 variant="ghost"
-                size="sm"
-                px={2}
+                size={isMobile ? "md" : "sm"}
+                px={isMobile ? 1 : 2}
+                minW={isMobile ? "44px" : "auto"}
+                minH={isMobile ? "44px" : "auto"}
               >
-                <HStack gap={2}>
-                  <Avatar.Root size="sm">
+                <HStack gap={isMobile ? 1 : 2}>
+                  <Avatar.Root size={isMobile ? "md" : "sm"}>
                     <Avatar.Image src={user?.avatar} />
                     <Avatar.Fallback>{user?.name || '用户'}</Avatar.Fallback>
                   </Avatar.Root>
-                  <Box textAlign="left" display={{ base: 'none', md: 'block' }}>
+                  <Box textAlign="left" display={{ base: 'none', lg: 'block' }}>
                     <Text fontSize="sm" fontWeight="medium" lineHeight="1.2">
                       {user?.name || '未登录'}
                     </Text>
@@ -218,11 +245,11 @@ export const Header: React.FC<HeaderProps> = ({
                       {user?.email || ''}
                     </Text>
                   </Box>
-                  <FiChevronDown />
+                  <FiChevronDown style={{ display: isMobile ? 'none' : 'block' }} />
                 </HStack>
               </Button>
             </MenuTrigger>
-            <MenuContent>
+            <MenuContent maxW={{ base: "90vw", md: "200px" }}>
               <MenuItem value="profile">
                 <FiUser />
                 个人资料

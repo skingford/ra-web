@@ -21,8 +21,12 @@ import {
   SelectValueText,
   SelectContent,
   SelectItem,
+  useBreakpointValue,
+  Card,
+  Stack,
+  Flex,
 } from '@chakra-ui/react'
-import { FiDownload, FiRefreshCw } from 'react-icons/fi'
+import { FiDownload, FiRefreshCw, FiMoreVertical } from 'react-icons/fi'
 
 export interface ColumnDef<T> {
   id: string
@@ -130,6 +134,11 @@ export function DataTable<T>({
 
   const filters = filtering?.filters || localFilters
   const setFilters = filtering?.onFilterChange || setLocalFilters
+
+  // Responsive breakpoints
+  const isMobile = useBreakpointValue({ base: true, md: false })
+  const isTablet = useBreakpointValue({ base: false, md: true, lg: false })
+  const showMobileCards = useBreakpointValue({ base: true, lg: false })
 
   // Handle sorting
   const handleSort = useCallback((columnId: string) => {
@@ -344,6 +353,87 @@ export function DataTable<T>({
     totalPages: Math.ceil(pagination.total / pagination.pageSize),
   } : null
 
+  // Mobile card renderer
+  const renderMobileCard = useCallback((item: T, index: number) => {
+    const isSelected = isItemSelected(item)
+    const itemId = selection?.getItemId(item)
+    
+    return (
+      <Card.Root 
+        key={itemId || index}
+        variant="outline"
+        bg={isSelected ? 'blue.50' : 'white'}
+        borderColor={isSelected ? 'blue.200' : 'gray.200'}
+        _dark={{
+          bg: isSelected ? 'blue.900' : 'gray.800',
+          borderColor: isSelected ? 'blue.600' : 'gray.600',
+        }}
+      >
+        <Card.Body p={4}>
+          <VStack align="stretch" gap={3}>
+            {/* Selection and primary info */}
+            <Flex justify="space-between" align="flex-start">
+              <HStack gap={3} flex={1}>
+                {selection && (
+                  <Checkbox.Root
+                    checked={isSelected}
+                    onCheckedChange={(e) => handleSelectItem(item, !!e.checked)}
+                    disabled={
+                      !isSelected && 
+                      selection.maxSelection && 
+                      selection.selectedItems.length >= selection.maxSelection
+                    }
+                  >
+                    <Checkbox.Indicator />
+                  </Checkbox.Root>
+                )}
+                
+                {/* Primary column (usually first column) */}
+                {columns[0] && (
+                  <Box flex={1}>
+                    <Text fontSize="sm" color="gray.500" mb={1}>
+                      {columns[0].header}
+                    </Text>
+                    <Text fontWeight="semibold" fontSize="md">
+                      {renderCell(item, columns[0])}
+                    </Text>
+                  </Box>
+                )}
+              </HStack>
+              
+              {/* Row actions */}
+              {rowActions && (
+                <Box>
+                  {rowActions(item)}
+                </Box>
+              )}
+            </Flex>
+            
+            {/* Additional columns in grid */}
+            {columns.length > 1 && (
+              <Box
+                display="grid"
+                gridTemplateColumns="repeat(auto-fit, minmax(120px, 1fr))"
+                gap={3}
+              >
+                {columns.slice(1).map((column) => (
+                  <Box key={column.id}>
+                    <Text fontSize="xs" color="gray.500" mb={1}>
+                      {column.header}
+                    </Text>
+                    <Box fontSize="sm">
+                      {renderCell(item, column)}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            )}
+          </VStack>
+        </Card.Body>
+      </Card.Root>
+    )
+  }, [columns, selection, isItemSelected, handleSelectItem, renderCell, rowActions])
+
   // Error state
   if (error) {
     return (
@@ -398,59 +488,78 @@ export function DataTable<T>({
   return (
     <VStack gap={4} align="stretch" className={className}>
       {/* Toolbar */}
-      <HStack justify="space-between" wrap="wrap" gap={4}>
+      <Stack 
+        direction={{ base: 'column', md: 'row' }}
+        justify="space-between" 
+        gap={4}
+      >
         {/* Left side - Global filter and actions */}
-        <HStack gap={4} flex={1}>
+        <Stack 
+          direction={{ base: 'column', sm: 'row' }}
+          gap={4} 
+          flex={1}
+          align={{ base: 'stretch', sm: 'center' }}
+        >
           {/* Global search */}
           {filtering?.onGlobalFilterChange && (
             <Input
               placeholder="Search all columns..."
               value={filtering.globalFilter || ''}
               onChange={(e) => handleGlobalFilterChange(e.target.value)}
-              maxW="300px"
+              maxW={{ base: '100%', md: '300px' }}
               size="sm"
             />
           )}
 
           {/* Bulk Actions */}
           {actions.length > 0 && selection && selection.selectedItems.length > 0 && (
-            <HStack gap={2} bg="blue.50" p={2} borderRadius="md">
-              <Text fontSize="sm" color="blue.700" fontWeight="medium">
+            <Stack 
+              direction={{ base: 'column', sm: 'row' }}
+              gap={2} 
+              bg="blue.50" 
+              p={3} 
+              borderRadius="md"
+              _dark={{ bg: 'blue.900' }}
+            >
+              <Text fontSize="sm" color="blue.700" fontWeight="medium" _dark={{ color: 'blue.300' }}>
                 {selection.selectedItems.length} selected
               </Text>
-              {actions
-                .filter(action => !action.requiresSelection || selection.selectedItems.length > 0)
-                .map((action) => {
-                  const isDisabled = typeof action.disabled === 'function' 
-                    ? action.disabled(selection.selectedItems)
-                    : action.disabled
-                  
-                  return (
-                    <Button
-                      key={action.id}
-                      size="sm"
-                      variant={action.variant || 'outline'}
-                      colorScheme={action.colorScheme}
-                      disabled={isDisabled || actionLoading === action.id}
-                      onClick={() => handleAction(action, selection.selectedItems)}
-                    >
-                      {action.icon}
-                      {action.label}
-                    </Button>
-                  )
-                })}
-            </HStack>
+              <Stack direction={{ base: 'column', sm: 'row' }} gap={2}>
+                {actions
+                  .filter(action => !action.requiresSelection || selection.selectedItems.length > 0)
+                  .map((action) => {
+                    const isDisabled = typeof action.disabled === 'function' 
+                      ? action.disabled(selection.selectedItems)
+                      : action.disabled
+                    
+                    return (
+                      <Button
+                        key={action.id}
+                        size="sm"
+                        variant={action.variant || 'outline'}
+                        colorScheme={action.colorScheme}
+                        disabled={isDisabled || actionLoading === action.id}
+                        onClick={() => handleAction(action, selection.selectedItems)}
+                        w={{ base: 'full', sm: 'auto' }}
+                      >
+                        {action.icon}
+                        {!isMobile && action.label}
+                      </Button>
+                    )
+                  })}
+              </Stack>
+            </Stack>
           )}
-        </HStack>
+        </Stack>
 
         {/* Right side - Utility actions */}
-        <HStack gap={2}>
+        <Stack direction="row" gap={2}>
           {exportable && onExport && (
             <MenuRoot>
               <MenuTrigger asChild>
                 <Button size="sm" variant="outline">
                   <FiDownload />
-                  Export
+                  {!isMobile && 'Export'}
                 </Button>
               </MenuTrigger>
               <MenuContent>
@@ -478,30 +587,49 @@ export function DataTable<T>({
               <FiRefreshCw />
             </IconButton>
           )}
-        </HStack>
-      </HStack>
+        </Stack>
+      </Stack>
 
       {/* Column Filters */}
       {columns.some(col => col.filterable) && (
-        <HStack gap={2} wrap="wrap" bg="gray.50" p={3} borderRadius="md">
-          {columns
-            .filter(col => col.filterable)
-            .map(column => (
-              <Box key={column.id} minW="200px">
-                {renderFilterInput(column)}
-              </Box>
-            ))}
-        </HStack>
+        <Box 
+          bg="gray.50" 
+          p={3} 
+          borderRadius="md"
+          _dark={{ bg: 'gray.800' }}
+        >
+          <Stack 
+            direction={{ base: 'column', md: 'row' }}
+            gap={3}
+            wrap="wrap"
+          >
+            {columns
+              .filter(col => col.filterable)
+              .map(column => (
+                <Box key={column.id} minW={{ base: '100%', md: '200px' }}>
+                  {renderFilterInput(column)}
+                </Box>
+              ))}
+          </Stack>
+        </Box>
       )}
 
-      {/* Table */}
-      <Box 
-        overflowX="auto" 
-        border="1px" 
-        borderColor="gray.200" 
-        borderRadius="md"
-        position="relative"
-      >
+      {/* Table or Mobile Cards */}
+      {showMobileCards ? (
+        // Mobile Card View
+        <VStack gap={3} align="stretch">
+          {data.map((item, index) => renderMobileCard(item, index))}
+        </VStack>
+      ) : (
+        // Desktop Table View
+        <Box 
+          overflowX="auto" 
+          border="1px" 
+          borderColor="gray.200" 
+          borderRadius="md"
+          position="relative"
+          _dark={{ borderColor: 'gray.600' }}
+        >
         <Table.Root size={size} variant={striped ? 'outline' : 'simple'}>
           <Table.Header position={stickyHeader ? 'sticky' : 'static'} top={0} bg="white" zIndex={1}>
             <Table.Row>
@@ -604,13 +732,23 @@ export function DataTable<T>({
             })}
           </Table.Body>
         </Table.Root>
-      </Box>
+        </Box>
+      )}
 
       {/* Pagination */}
       {pagination && (
-        <HStack justify="space-between" align="center" wrap="wrap" gap={4}>
-          <HStack gap={4}>
-            <Text fontSize="sm" color="gray.600">
+        <Stack 
+          direction={{ base: 'column', md: 'row' }}
+          justify="space-between" 
+          align="center" 
+          gap={4}
+        >
+          <Stack 
+            direction={{ base: 'column', sm: 'row' }}
+            gap={4}
+            align="center"
+          >
+            <Text fontSize="sm" color="gray.600" textAlign={{ base: 'center', sm: 'left' }}>
               Showing {paginationInfo?.start} to {paginationInfo?.end} of {paginationInfo?.total} results
             </Text>
             
@@ -620,7 +758,7 @@ export function DataTable<T>({
               size="sm"
               width="auto"
             >
-              <SelectTrigger>
+              <SelectTrigger minW="120px">
                 <SelectValueText />
               </SelectTrigger>
               <SelectContent>
@@ -631,28 +769,36 @@ export function DataTable<T>({
                 ))}
               </SelectContent>
             </SelectRoot>
-          </HStack>
+          </Stack>
 
-          <HStack gap={1}>
-            <Button
-              size="sm"
-              variant="outline"
-              disabled={pagination.page <= 1}
-              onClick={() => pagination.onPageChange(1)}
-            >
-              First
-            </Button>
+          <Stack direction="row" gap={1}>
+            {!isMobile && (
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={pagination.page <= 1}
+                onClick={() => pagination.onPageChange(1)}
+              >
+                First
+              </Button>
+            )}
             <Button
               size="sm"
               variant="outline"
               disabled={pagination.page <= 1}
               onClick={() => pagination.onPageChange(pagination.page - 1)}
             >
-              Previous
+              {isMobile ? '‹' : 'Previous'}
             </Button>
             
-            <Text fontSize="sm" px={3} whiteSpace="nowrap">
-              Page {pagination.page} of {paginationInfo?.totalPages}
+            <Text 
+              fontSize="sm" 
+              px={3} 
+              whiteSpace="nowrap"
+              display="flex"
+              alignItems="center"
+            >
+              {isMobile ? `${pagination.page}/${paginationInfo?.totalPages}` : `Page ${pagination.page} of ${paginationInfo?.totalPages}`}
             </Text>
             
             <Button
@@ -661,18 +807,20 @@ export function DataTable<T>({
               disabled={pagination.page >= (paginationInfo?.totalPages || 1)}
               onClick={() => pagination.onPageChange(pagination.page + 1)}
             >
-              Next
+              {isMobile ? '›' : 'Next'}
             </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              disabled={pagination.page >= (paginationInfo?.totalPages || 1)}
-              onClick={() => pagination.onPageChange(paginationInfo?.totalPages || 1)}
-            >
-              Last
-            </Button>
-          </HStack>
-        </HStack>
+            {!isMobile && (
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={pagination.page >= (paginationInfo?.totalPages || 1)}
+                onClick={() => pagination.onPageChange(paginationInfo?.totalPages || 1)}
+              >
+                Last
+              </Button>
+            )}
+          </Stack>
+        </Stack>
       )}
 
       {/* Selection info */}

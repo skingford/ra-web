@@ -6,11 +6,19 @@
   "scripts": {
     "dev": "vite --port 5174",
     "build": "tsc -b && vite build",
+    "build:analyze": "ANALYZE=true npm run build",
+    "build:profile": "tsc -b && vite build --mode profile",
     "lint": "eslint .",
     "preview": "vite preview --port 5174",
     "type-check": "tsc --noEmit",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "test:performance": "vitest run --reporter=verbose src/**/*.perf.test.ts",
+    "test:performance:watch": "vitest --reporter=verbose src/**/*.perf.test.ts",
+    "bundle-size": "npm run build && npx bundlesize",
+    "bundle-analyze": "npm run build:analyze && open dist/stats.html",
+    "performance:benchmark": "npm run test:performance && npm run bundle-analyze",
+    "performance:ci": "npm run test:performance -- --run"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.27.0",
@@ -29,6 +37,7 @@
     "react-router-dom": "^7.9.1",
     "recharts": "^3.2.1",
     "xlsx": "^0.18.5",
+    "zod": "^4.1.11",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
@@ -45,9 +54,11 @@
     "@types/recharts": "^2.0.1",
     "@vitejs/plugin-react": "^5.0.2",
     "jsdom": "^27.0.0",
+    "rollup-plugin-visualizer": "^6.0.3",
     "unplugin-auto-import": "^20.1.0",
     "unplugin-vue-components": "^29.0.0",
     "vite": "^7.1.6",
+    "vite-plugin-pwa": "^1.0.3",
     "vitest": "^3.2.4"
   }
 }

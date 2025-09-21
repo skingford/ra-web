@@ -1,0 +1,214 @@
+/* High Contrast Mode */
+.high-contrast {
+  --chakra-colors-brand-50: #ffffff;
+  --chakra-colors-brand-100: #ffffff;
+  --chakra-colors-brand-200: #ffffff;
+  --chakra-colors-brand-300: #ffffff;
+  --chakra-colors-brand-400: #0066cc;
+  --chakra-colors-brand-500: #0066cc;
+  --chakra-colors-brand-600: #0066cc;
+  --chakra-colors-brand-700: #0066cc;
+  --chakra-colors-brand-800: #0066cc;
+  --chakra-colors-brand-900: #0066cc;
+
+  --chakra-colors-neutral-50: #ffffff;
+  --chakra-colors-neutral-100: #ffffff;
+  --chakra-colors-neutral-200: #cccccc;
+  --chakra-colors-neutral-300: #999999;
+  --chakra-colors-neutral-400: #666666;
+  --chakra-colors-neutral-500: #333333;
+  --chakra-colors-neutral-600: #000000;
+  --chakra-colors-neutral-700: #000000;
+  --chakra-colors-neutral-800: #000000;
+  --chakra-colors-neutral-900: #000000;
+
+  --chakra-colors-success-500: #008000;
+  --chakra-colors-warning-500: #ff8c00;
+  --chakra-colors-error-500: #cc0000;
+}
+
+.high-contrast * {
+  border-color: #000000 !important;
+}
+
+.high-contrast button,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  border: 2px solid #000000 !important;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.high-contrast button:hover,
+.high-contrast button:focus {
+  background-color: #0066cc !important;
+  color: #ffffff !important;
+}
+
+.high-contrast a {
+  color: #0066cc !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast a:hover,
+.high-contrast a:focus {
+  color: #ffffff !important;
+  background-color: #0066cc !important;
+}
+
+/* Reduced Motion */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Font Size Adjustments */
+.font-small {
+  font-size: 14px;
+}
+
+.font-medium {
+  font-size: 16px;
+}
+
+.font-large {
+  font-size: 18px;
+}
+
+.font-extra-large {
+  font-size: 20px;
+}
+
+/* Enhanced Focus Styles */
+.focus-visible *:focus-visible {
+  outline: 3px solid #0066cc !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 5px #0066cc !important;
+}
+
+.focus-visible button:focus-visible,
+.focus-visible input:focus-visible,
+.focus-visible select:focus-visible,
+.focus-visible textarea:focus-visible,
+.focus-visible [role="button"]:focus-visible,
+.focus-visible [role="menuitem"]:focus-visible,
+.focus-visible [role="tab"]:focus-visible {
+  outline: 3px solid #0066cc !important;
+  outline-offset: 2px !important;
+}
+
+/* Skip Links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #000000;
+  color: #ffffff;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 9999;
+  border-radius: 4px;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Screen Reader Only Content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Keyboard Navigation Indicators */
+.keyboard-navigation [role="menuitem"]:focus,
+.keyboard-navigation [role="button"]:focus,
+.keyboard-navigation button:focus {
+  background-color: #e6f3ff !important;
+  outline: 2px solid #0066cc !important;
+}
+
+/* High Contrast Dark Mode */
+.high-contrast.chakra-ui-dark {
+  --chakra-colors-brand-50: #000000;
+  --chakra-colors-brand-100: #000000;
+  --chakra-colors-brand-200: #000000;
+  --chakra-colors-brand-300: #000000;
+  --chakra-colors-brand-400: #66ccff;
+  --chakra-colors-brand-500: #66ccff;
+  --chakra-colors-brand-600: #66ccff;
+  --chakra-colors-brand-700: #66ccff;
+  --chakra-colors-brand-800: #66ccff;
+  --chakra-colors-brand-900: #66ccff;
+
+  --chakra-colors-neutral-50: #000000;
+  --chakra-colors-neutral-100: #000000;
+  --chakra-colors-neutral-200: #333333;
+  --chakra-colors-neutral-300: #666666;
+  --chakra-colors-neutral-400: #999999;
+  --chakra-colors-neutral-500: #cccccc;
+  --chakra-colors-neutral-600: #ffffff;
+  --chakra-colors-neutral-700: #ffffff;
+  --chakra-colors-neutral-800: #ffffff;
+  --chakra-colors-neutral-900: #ffffff;
+}
+
+.high-contrast.chakra-ui-dark button,
+.high-contrast.chakra-ui-dark input,
+.high-contrast.chakra-ui-dark select,
+.high-contrast.chakra-ui-dark textarea {
+  border: 2px solid #ffffff !important;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.high-contrast.chakra-ui-dark button:hover,
+.high-contrast.chakra-ui-dark button:focus {
+  background-color: #66ccff !important;
+  color: #000000 !important;
+}
+
+/* Ensure minimum touch target sizes */
+@media (pointer: coarse) {
+  button,
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"],
+  [role="button"],
+  [role="menuitem"],
+  [role="tab"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Print styles for accessibility */
+@media print {
+  .high-contrast * {
+    background: transparent !important;
+    color: black !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  .high-contrast a,
+  .high-contrast a:visited {
+    text-decoration: underline;
+  }
+  
+  .high-contrast a[href]:after {
+    content: " (" attr(href) ")";
+  }
+}

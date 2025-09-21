@@ -6,18 +6,37 @@ import {
   Button,
   HStack,
   Field,
+  Grid,
+  Card,
+  Text,
+  Icon,
+  VStack,
+  Badge,
+  Flex,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { Switch } from '@chakra-ui/react';
 import { useToaster } from '../lib/hooks/useToaster';
-import { FiRefreshCw, FiSettings } from 'react-icons/fi';
+import { 
+  FiRefreshCw, 
+  FiSettings, 
+  FiUsers, 
+  FiBarChart, 
+  FiFileText, 
+  FiTrendingUp,
+  FiActivity,
+  FiDollarSign,
+  FiShoppingCart,
+  FiArrowRight
+} from 'react-icons/fi';
 import {
   DashboardGrid,
   useDashboardLayout,
-
   WidgetConfig,
   WidgetData,
   DashboardLayout,
 } from '../components/widgets';
+import { AdminLayout } from '../components/layout';
 
 // Sample dashboard configuration
 const SAMPLE_LAYOUT: DashboardLayout = {
@@ -141,6 +160,61 @@ const SAMPLE_LAYOUT: DashboardLayout = {
   ],
 };
 
+// Quick action cards for navigation
+const QuickActionCard: React.FC<{
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  color: string;
+  onClick: () => void;
+  badge?: string;
+}> = ({ title, description, icon, color, onClick, badge }) => (
+  <Card.Root 
+    cursor="pointer" 
+    onClick={onClick}
+    _hover={{ 
+      transform: 'translateY(-2px)', 
+      shadow: 'lg',
+      borderColor: `${color}.200`
+    }}
+    transition="all 0.2s"
+    borderWidth="1px"
+    borderColor="gray.200"
+  >
+    <Card.Body p={6}>
+      <Flex align="center" justify="space-between" mb={3}>
+        <Box
+          p={3}
+          borderRadius="lg"
+          bg={`${color}.50`}
+          color={`${color}.600`}
+        >
+          <Icon as={icon} boxSize={6} />
+        </Box>
+        {badge && (
+          <Badge colorScheme={color} variant="subtle">
+            {badge}
+          </Badge>
+        )}
+      </Flex>
+      <VStack align="start" gap={1}>
+        <Text fontWeight="semibold" fontSize="lg">
+          {title}
+        </Text>
+        <Text color="gray.600" fontSize="sm">
+          {description}
+        </Text>
+      </VStack>
+      <Flex align="center" mt={4} color={`${color}.600`}>
+        <Text fontSize="sm" fontWeight="medium">
+          View Details
+        </Text>
+        <Icon as={FiArrowRight} ml={2} boxSize={4} />
+      </Flex>
+    </Card.Body>
+  </Card.Root>
+);
+
 export const Dashboard: React.FC = () => {
   const toast = useToaster();
   const [isEditable, setIsEditable] = useState(false);
@@ -153,6 +227,51 @@ export const Dashboard: React.FC = () => {
     initialLayout: SAMPLE_LAYOUT,
     persistKey: 'main-dashboard',
   });
+
+  // Navigation handlers for quick actions
+  const handleNavigateToUsers = useCallback(() => {
+    toast({
+      title: 'Navigating to User Management',
+      description: 'Opening user management interface...',
+      status: 'info',
+      duration: 2000,
+    });
+    // In real app: navigate('/users')
+    console.log('Navigate to: /users');
+  }, [toast]);
+
+  const handleNavigateToAnalytics = useCallback(() => {
+    toast({
+      title: 'Navigating to Analytics',
+      description: 'Opening analytics dashboard...',
+      status: 'info',
+      duration: 2000,
+    });
+    // In real app: navigate('/analytics')
+    console.log('Navigate to: /analytics');
+  }, [toast]);
+
+  const handleNavigateToReports = useCallback(() => {
+    toast({
+      title: 'Navigating to Reports',
+      description: 'Opening report builder...',
+      status: 'info',
+      duration: 2000,
+    });
+    // In real app: navigate('/reports')
+    console.log('Navigate to: /reports');
+  }, [toast]);
+
+  const handleNavigateToSettings = useCallback(() => {
+    toast({
+      title: 'Navigating to Settings',
+      description: 'Opening system settings...',
+      status: 'info',
+      duration: 2000,
+    });
+    // In real app: navigate('/settings')
+    console.log('Navigate to: /settings');
+  }, [toast]);
 
   // Simulate real-time data updates
   const refreshAllWidgets = useCallback(() => {
@@ -232,63 +351,112 @@ export const Dashboard: React.FC = () => {
     refreshAllWidgets();
   }, []);
 
+  const breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Dashboard', href: '/dashboard' },
+  ];
+
+  const headerActions = (
+    <HStack gap={4}>
+      <Field.Root display="flex" alignItems="center">
+        <Field.Label htmlFor="edit-mode" mb="0" fontSize="sm">
+          Edit Mode
+        </Field.Label>
+        <Switch.Root
+          id="edit-mode"
+          checked={isEditable}
+          onCheckedChange={(details) => setIsEditable(details.checked)}
+        >
+          <Switch.Control>
+            <Switch.Thumb />
+          </Switch.Control>
+        </Switch.Root>
+      </Field.Root>
+      
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={refreshAllWidgets}
+      >
+        <FiRefreshCw />
+        Refresh All
+      </Button>
+      
+      <Button
+        colorScheme="blue"
+        size="sm"
+        disabled={!isEditable}
+      >
+        <FiSettings />
+        Configure
+      </Button>
+    </HStack>
+  );
+
   return (
-    <Container maxW="full" p={0}>
-      <Box bg="gray.50" minH="100vh">
-        <Box bg="white" borderBottom="1px" borderColor="gray.200" p={6}>
-          <HStack justify="space-between" align="center">
-            <Heading size="lg" color="gray.800">
-              Dashboard
-            </Heading>
-            
-            <HStack gap={4}>
-              <Field.Root display="flex" alignItems="center">
-                <Field.Label htmlFor="edit-mode" mb="0" fontSize="sm">
-                  Edit Mode
-                </Field.Label>
-                <Switch.Root
-                  id="edit-mode"
-                  checked={isEditable}
-                  onCheckedChange={(details) => setIsEditable(details.checked)}
-                >
-                  <Switch.Control>
-                    <Switch.Thumb />
-                  </Switch.Control>
-                </Switch.Root>
-              </Field.Root>
-              
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={refreshAllWidgets}
-              >
-                <FiRefreshCw />
-                Refresh All
-              </Button>
-              
-              <Button
-                colorScheme="blue"
-                size="sm"
-                disabled={!isEditable}
-              >
-                <FiSettings />
-                Configure
-              </Button>
-            </HStack>
-          </HStack>
+    <AdminLayout 
+      title="Dashboard Overview" 
+      breadcrumbs={breadcrumbs}
+      actions={headerActions}
+    >
+      <VStack gap={8} align="stretch">
+        {/* Quick Actions Section */}
+        <Box>
+          <Heading size="md" mb={4} color="gray.800">
+            Quick Actions
+          </Heading>
+          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} gap={6}>
+            <QuickActionCard
+              title="User Management"
+              description="Manage users, roles, and permissions"
+              icon={FiUsers}
+              color="blue"
+              onClick={handleNavigateToUsers}
+              badge="24 Active"
+            />
+            <QuickActionCard
+              title="Analytics"
+              description="View detailed analytics and insights"
+              icon={FiBarChart}
+              color="green"
+              onClick={handleNavigateToAnalytics}
+              badge="Live Data"
+            />
+            <QuickActionCard
+              title="Reports"
+              description="Generate and export custom reports"
+              icon={FiFileText}
+              color="purple"
+              onClick={handleNavigateToReports}
+              badge="5 Pending"
+            />
+            <QuickActionCard
+              title="System Settings"
+              description="Configure system preferences"
+              icon={FiSettings}
+              color="orange"
+              onClick={handleNavigateToSettings}
+            />
+          </SimpleGrid>
         </Box>
 
-        <DashboardGrid
-          layout={layout}
-          widgetData={widgetData}
-          onLayoutChange={updateLayout}
-          onWidgetRefresh={refreshWidget}
-          onChartDrillDown={handleChartDrillDown}
-          onMetricDrillDown={handleMetricDrillDown}
-          isEditable={isEditable}
-        />
-      </Box>
-    </Container>
+        {/* Main Dashboard Widgets */}
+        <Box>
+          <Heading size="md" mb={4} color="gray.800">
+            Key Metrics & Analytics
+          </Heading>
+          <DashboardGrid
+            layout={layout}
+            widgetData={widgetData}
+            onLayoutChange={updateLayout}
+            onWidgetRefresh={refreshWidget}
+            onChartDrillDown={handleChartDrillDown}
+            onMetricDrillDown={handleMetricDrillDown}
+            isEditable={isEditable}
+          />
+        </Box>
+      </VStack>
+    </AdminLayout>
   );
 };
 

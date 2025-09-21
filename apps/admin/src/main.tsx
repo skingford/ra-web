@@ -14,6 +14,7 @@ if (!rootElement) {
 
 console.log('找到 root 元素，开始渲染应用')
 
+// Enable React concurrent features for better performance
 createRoot(rootElement).render(
   <StrictMode>
     <ErrorBoundary>

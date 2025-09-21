@@ -24,10 +24,11 @@ vi.mock('@chakra-ui/react', async () => {
   const actual = await vi.importActual('@chakra-ui/react')
   return {
     ...actual,
-    useDisclosure: () => ({
-      isOpen: false,
-      onToggle: vi.fn(),
-    }),
+    // useDisclosure replaced with useState in v3
+    // useDisclosure: () => ({
+    //   isOpen: false,
+    //   onToggle: vi.fn(),
+    // }),
     Collapse: ({ children, in: isOpen }: any) => isOpen ? <div>{children}</div> : null,
     Tooltip: ({ children }: any) => <div>{children}</div>,
   }

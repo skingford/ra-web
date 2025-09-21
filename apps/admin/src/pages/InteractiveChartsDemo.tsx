@@ -3,6 +3,7 @@ import { Box, VStack, Text, Button, HStack } from '@chakra-ui/react';
 import { FiBarChart, FiTrendingUp } from 'react-icons/fi';
 import { useToaster } from '../lib/hooks/useToaster';
 import { InteractiveCharts } from '../components/widgets';
+import { AdminLayout } from '../components/layout';
 
 export const InteractiveChartsDemo: React.FC = () => {
   const toast = useToaster();
@@ -17,31 +18,36 @@ export const InteractiveChartsDemo: React.FC = () => {
     });
   };
 
+  const breadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Interactive Charts', href: '/charts' },
+  ];
+
+  const headerActions = (
+    <HStack gap={4}>
+      <Button colorScheme="blue" variant="outline">
+        <FiTrendingUp />
+        View Analytics
+      </Button>
+      <Button colorScheme="green" variant="outline">
+        Export Data
+      </Button>
+    </HStack>
+  );
+
   return (
-    <Box p={6}>
+    <AdminLayout 
+      title="Interactive Charts & Metrics Demo" 
+      breadcrumbs={breadcrumbs}
+      actions={headerActions}
+    >
       <VStack gap={6} align="stretch">
-        {/* Header */}
+        {/* Description */}
         <Box>
-          <HStack gap={3} mb={2}>
-            <FiBarChart size={24} />
-            <Text fontSize="2xl" fontWeight="bold">
-              Interactive Charts & Metrics Demo
-            </Text>
-          </HStack>
           <Text color="gray.600" mb={4}>
             This demo showcases the interactive chart and metric widgets with drill-down functionality,
             responsive design, and real-time data updates.
           </Text>
-          
-          <HStack gap={4}>
-            <Button colorScheme="blue" variant="outline">
-              <FiTrendingUp />
-              View Analytics
-            </Button>
-            <Button colorScheme="green" variant="outline">
-              Export Data
-            </Button>
-          </HStack>
         </Box>
 
         {/* Interactive Charts Component */}
@@ -69,6 +75,6 @@ export const InteractiveChartsDemo: React.FC = () => {
           </VStack>
         </Box>
       </VStack>
-    </Box>
+    </AdminLayout>
   );
 };

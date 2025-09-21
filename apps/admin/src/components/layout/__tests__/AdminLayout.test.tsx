@@ -33,15 +33,13 @@ vi.mock('@chakra-ui/react', async () => {
   return {
     ...actual,
     useBreakpointValue: vi.fn(() => false), // Default to desktop
-    useColorMode: () => ({
-      colorMode: 'light',
-      toggleColorMode: vi.fn(),
-    }),
-    useDisclosure: () => ({
-      isOpen: false,
-      onOpen: vi.fn(),
-      onClose: vi.fn(),
-    }),
+    // useColorMode removed in Chakra UI v3
+    // useDisclosure replaced with useState in v3
+    // useDisclosure: () => ({
+    //   isOpen: false,
+    //   onOpen: vi.fn(),
+    //   onClose: vi.fn(),
+    // }),
     Collapse: ({ children, in: isOpen }: any) => isOpen ? <div>{children}</div> : null,
     MenuRoot: ({ children }: any) => <div>{children}</div>,
     MenuTrigger: ({ children }: any) => <div>{children}</div>,

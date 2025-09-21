@@ -15,6 +15,8 @@ import {
   Field,
   Progress,
   Alert,
+  useBreakpointValue,
+  Stack,
 } from '@chakra-ui/react'
 import { useFormValidation, ValidationRules, createValidationRules } from '../../lib/hooks/useFormValidation'
 
@@ -188,6 +190,10 @@ export function FormBuilder({
   // File upload states
   const [fileStates, setFileStates] = useState<Record<string, FileUploadState>>({})
 
+  // Responsive breakpoints
+  const isMobile = useBreakpointValue({ base: true, md: false })
+  const isTablet = useBreakpointValue({ base: false, md: true, lg: false })
+
   // Check if field should be visible based on conditional logic
   const isFieldVisible = useCallback((field: FormField): boolean => {
     if (field.hidden) return false
@@ -324,6 +330,9 @@ export function FormBuilder({
             type={field.type}
             value={fieldValue || ''}
             placeholder={field.placeholder}
+            size={isMobile ? 'lg' : 'md'}
+            // Better touch targets on mobile
+            minH={isMobile ? '48px' : 'auto'}
           />
         )
         break
@@ -337,6 +346,8 @@ export function FormBuilder({
             placeholder={field.placeholder}
             min={field.validation?.min}
             max={field.validation?.max}
+            size={isMobile ? 'lg' : 'md'}
+            minH={isMobile ? '48px' : 'auto'}
           />
         )
         break
@@ -347,7 +358,9 @@ export function FormBuilder({
             {...fieldProps}
             value={fieldValue || ''}
             placeholder={field.placeholder}
-            rows={4}
+            rows={isMobile ? 3 : 4}
+            size={isMobile ? 'lg' : 'md'}
+            minH={isMobile ? '120px' : 'auto'}
           />
         )
         break

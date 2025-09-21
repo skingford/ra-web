@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Box,
   VStack,
@@ -6,7 +6,6 @@ import {
   Icon,
   Flex,
   Collapsible,
-  useDisclosure,
   IconButton,
   Tooltip,
 } from '@chakra-ui/react'
@@ -20,7 +19,9 @@ import {
   FiChevronRight,
   FiX
 } from 'react-icons/fi'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
+import { useKeyboardNavigation } from '../../hooks/useKeyboardNavigation'
 
 interface NavigationItem {
   id: string
@@ -34,69 +35,66 @@ interface NavigationItem {
 interface SidebarProps {
   collapsed?: boolean
   onClose?: () => void
+  isMobile?: boolean
 }
 
-// Mock navigation items - in real app, this would come from config/API
+// Navigation items matching the actual routes
 const navigationItems: NavigationItem[] = [
   {
-    id: 'dashboard',
-    label: '仪表板',
+    id: 'home',
+    label: 'Home',
     icon: FiHome,
+    path: '/',
+  },
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: FiBarChart,
     path: '/dashboard',
   },
   {
-    id: 'users',
-    label: '用户管理',
-    icon: FiUsers,
-    path: '/users',
-    children: [
-      {
-        id: 'users-list',
-        label: '用户列表',
-        icon: FiUsers,
-        path: '/users/list',
-      },
-      {
-        id: 'users-roles',
-        label: '角色管理',
-        icon: FiUsers,
-        path: '/users/roles',
-        permissions: ['users.manage_roles'],
-      },
-    ],
-  },
-  {
-    id: 'analytics',
-    label: '数据分析',
+    id: 'charts',
+    label: 'Interactive Charts',
     icon: FiBarChart,
-    path: '/analytics',
+    path: '/charts',
+  },
+  {
+    id: 'export',
+    label: 'Export & Reports',
+    icon: FiFileText,
+    path: '/export',
     children: [
       {
-        id: 'analytics-overview',
-        label: '概览',
-        icon: FiBarChart,
-        path: '/analytics/overview',
+        id: 'export-full',
+        label: 'Full Export Demo',
+        icon: FiFileText,
+        path: '/export',
       },
       {
-        id: 'analytics-reports',
-        label: '报表',
+        id: 'export-simple',
+        label: 'Simple Export',
         icon: FiFileText,
-        path: '/analytics/reports',
+        path: '/export/simple',
+      },
+      {
+        id: 'export-minimal',
+        label: 'Minimal Export',
+        icon: FiFileText,
+        path: '/export/minimal',
       },
     ],
   },
   {
-    id: 'content',
-    label: '内容管理',
-    icon: FiFileText,
-    path: '/content',
+    id: 'data-table',
+    label: 'Data Management',
+    icon: FiUsers,
+    path: '/data-table',
   },
   {
-    id: 'settings',
-    label: '系统设置',
+    id: 'form-builder',
+    label: 'Form Builder',
     icon: FiSettings,
-    path: '/settings',
-    permissions: ['system.settings'],
+    path: '/form-builder',
   },
 ]
 
@@ -105,16 +103,20 @@ interface NavigationItemProps {
   collapsed: boolean
   level?: number
   currentPath?: string
+  isMobile?: boolean
 }
 
 const NavigationItemComponent: React.FC<NavigationItemProps> = ({
   item,
   collapsed,
   level = 0,
-  currentPath = '/dashboard',
+  currentPath,
+  isMobile = false,
 }) => {
-  const { open, onToggle } = useDisclosure()
+  const [open, setOpen] = useState(false)
+  const onToggle = () => setOpen(!open)
   const { permissions } = useAuthStore()
+  const navigate = useNavigate()
   
   // Check if user has permission to see this item
   const hasPermission = !item.permissions || 
@@ -132,8 +134,7 @@ const NavigationItemComponent: React.FC<NavigationItemProps> = ({
     if (hasChildren) {
       onToggle()
     } else {
-      // In real app, this would use React Router
-      console.log(`Navigate to: ${item.path}`)
+      navigate(item.path)
     }
   }
 
@@ -157,7 +158,7 @@ const NavigationItemComponent: React.FC<NavigationItemProps> = ({
         },
       }}
       onClick={handleClick}
-      role="button"
+      role="menuitem"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -166,19 +167,28 @@ const NavigationItemComponent: React.FC<NavigationItemProps> = ({
         }
       }}
       pl={level > 0 ? (collapsed ? 2 : 6) : undefined}
+      // Larger touch targets on mobile
+      minH={isMobile ? "48px" : "auto"}
+      aria-expanded={hasChildren ? open : undefined}
+      aria-current={isActive ? 'page' : undefined}
     >
-      <Icon as={item.icon} boxSize={5} />
+      <Icon as={item.icon} boxSize={isMobile ? 6 : 5} />
       
       {!collapsed && (
         <>
-          <Text ml={3} fontSize="sm" fontWeight="medium" flex={1}>
+          <Text 
+            ml={3} 
+            fontSize={isMobile ? "md" : "sm"} 
+            fontWeight="medium" 
+            flex={1}
+          >
             {item.label}
           </Text>
           
           {hasChildren && (
             <Icon
-              as={isOpen ? FiChevronDown : FiChevronRight}
-              boxSize={4}
+              as={open ? FiChevronDown : FiChevronRight}
+              boxSize={isMobile ? 5 : 4}
               transition="transform 0.2s"
             />
           )}
@@ -215,6 +225,7 @@ const NavigationItemComponent: React.FC<NavigationItemProps> = ({
                 collapsed={collapsed}
                 level={level + 1}
                 currentPath={currentPath}
+                isMobile={isMobile}
               />
             ))}
           </VStack>
@@ -225,9 +236,16 @@ const NavigationItemComponent: React.FC<NavigationItemProps> = ({
   )
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onClose }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onClose, isMobile = false }) => {
+  const { containerRef } = useKeyboardNavigation({
+    selector: '[role="menuitem"], button',
+    loop: true,
+  })
+  const location = useLocation()
+
   return (
     <Box
+      ref={containerRef}
       bg="white"
       borderRight="1px"
       borderColor="neutral.200"
@@ -235,6 +253,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onClose }) 
       overflowY="auto"
       position="relative"
       _dark={{ bg: 'neutral.800', borderColor: 'neutral.700' }}
+      role="navigation"
+      aria-label="Main navigation menu"
     >
       {/* Header */}
       <Flex
@@ -248,19 +268,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onClose }) 
       >
         {!collapsed && (
           <Text fontSize="lg" fontWeight="bold" color="brand.600">
-            RA Web 管理后台
+            Admin Dashboard
           </Text>
         )}
         
         {collapsed && (
           <Text fontSize="lg" fontWeight="bold" color="brand.600">
-            RA
+            AD
           </Text>
         )}
         
         {onClose && (
           <IconButton
-            aria-label="关闭菜单"
+            aria-label="Close menu"
             children={<FiX />}
             variant="ghost"
             size="sm"
@@ -277,6 +297,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ collapsed = false, onClose }) 
               key={item.id}
               item={item}
               collapsed={collapsed}
+              currentPath={location.pathname}
+              isMobile={isMobile}
             />
           ))}
         </VStack>

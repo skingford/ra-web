@@ -21,15 +21,11 @@ vi.mock('react-icons/fi', () => ({
   FiChevronDown: () => <div data-testid="chevron-down-icon" />,
 }))
 
-// Mock useColorMode and Menu components
+// Mock Menu components (useColorMode removed in Chakra UI v3)
 vi.mock('@chakra-ui/react', async () => {
   const actual = await vi.importActual('@chakra-ui/react')
   return {
     ...actual,
-    useColorMode: () => ({
-      colorMode: 'light',
-      toggleColorMode: vi.fn(),
-    }),
     MenuRoot: ({ children }: any) => <div>{children}</div>,
     MenuTrigger: ({ children }: any) => <div>{children}</div>,
     MenuContent: ({ children }: any) => <div>{children}</div>,
