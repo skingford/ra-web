@@ -45,3 +45,6 @@ coverage/
 
 # ESLint cache
 .eslintcache
+
+.kiro/
+.trae/
