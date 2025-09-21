@@ -40,7 +40,7 @@ export default defineConfig({
       resolvers: [
         // Auto import Chakra UI components
         (componentName) => {
-          if (componentName.match(/^(Box|Button|Input|Text|Flex|Stack|VStack|HStack|Grid|Container|Heading|Image|Link|List|Modal|Drawer|Menu|Popover|Tooltip|Alert|Badge|Card|Divider|Icon|Spinner|Progress|Skeleton|Table|Tabs|Accordion|Breadcrumb|Pagination|Select|Checkbox|Radio|Switch|Slider|Textarea|FormControl|FormLabel|FormErrorMessage|FormHelperText|InputGroup|InputLeftElement|InputRightElement|NumberInput|PinInput|RangeSlider|Editable|Avatar|AvatarGroup|Tag|Wrap|SimpleGrid|Center|Square|Circle|AspectRatio|Spacer|VisuallyHidden|Show|Hide)$/)) {
+          if (componentName.match(/^(Box|Button|Input|Text|Flex|Stack|VStack|HStack|Grid|GridItem|Container|Heading|Image|Link|List|Drawer|Menu|Popover|Tooltip|Alert|Badge|Card|Separator|Icon|Spinner|Progress|Skeleton|Table|Tabs|Accordion|Breadcrumb|Pagination|Select|Checkbox|Radio|Switch|Slider|Textarea|InputGroup|InputLeftElement|InputRightElement|NumberInput|PinInput|RangeSlider|Editable|Avatar|AvatarGroup|Tag|Wrap|SimpleGrid|Center|Square|Circle|AspectRatio|Spacer|VisuallyHidden|Show|Hide)$/)) {
             return { name: componentName, from: '@chakra-ui/react' }
           }
         }

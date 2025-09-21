@@ -2,10 +2,10 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { system, theme, breakpointUtils, colorModeUtils } from '../index'
 
 // Mock window object for breakpoint tests
-const mockWindow = {
-  innerWidth: 1024,
-  matchMedia: vi.fn(),
-}
+// const mockWindow = {
+//   innerWidth: 1024,
+//   matchMedia: vi.fn(),
+// }
 
 Object.defineProperty(window, 'innerWidth', {
   writable: true,

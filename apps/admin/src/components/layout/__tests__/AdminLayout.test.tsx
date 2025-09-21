@@ -22,7 +22,7 @@ vi.mock('react-icons/fi', () => ({
   FiChevronRight: () => <div data-testid="chevron-right-icon" />,
   FiHome: () => <div data-testid="home-icon" />,
   FiUsers: () => <div data-testid="users-icon" />,
-  FiBarChart3: () => <div data-testid="chart-icon" />,
+  FiBarChart: () => <div data-testid="chart-icon" />,
   FiFileText: () => <div data-testid="file-icon" />,
   FiX: () => <div data-testid="close-icon" />,
 }))

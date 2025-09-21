@@ -102,14 +102,14 @@
     - Test widget rendering and data binding
     - _Requirements: 7.1, 7.3, 7.5_
 
-  - [ ] 6.2 Build interactive charts and metrics
+  - [x] 6.2 Build interactive charts and metrics
     - Integrate chart library (Chart.js or Recharts) with Chakra UI
     - Create KPI metric cards with trend indicators
     - Implement drill-down functionality for detailed views
     - Test chart interactions and responsiveness
     - _Requirements: 7.1, 7.2, 5.1, 5.2, 5.3_
 
-  - [ ] 6.3 Add export and reporting features
+  - [x] 6.3 Add export and reporting features
     - Implement data export functionality (PDF, Excel, CSV)
     - Create date range filtering and comparison tools
     - Build report generation with customizable parameters

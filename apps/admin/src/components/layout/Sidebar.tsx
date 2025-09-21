@@ -14,7 +14,7 @@ import {
   FiHome, 
   FiUsers, 
   FiSettings, 
-  FiBarChart3, 
+  FiBarChart, 
   FiFileText,
   FiChevronDown,
   FiChevronRight,
@@ -68,13 +68,13 @@ const navigationItems: NavigationItem[] = [
   {
     id: 'analytics',
     label: '数据分析',
-    icon: FiBarChart3,
+    icon: FiBarChart,
     path: '/analytics',
     children: [
       {
         id: 'analytics-overview',
         label: '概览',
-        icon: FiBarChart3,
+        icon: FiBarChart,
         path: '/analytics/overview',
       },
       {

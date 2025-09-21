@@ -166,7 +166,7 @@ export function usePermissionBasedNavigation<T extends { permissions?: string[] 
       // Check if user has any of the required permissions
       return item.permissions.some(permission => {
         const [resource, action] = permission.split(':')
-        return hasPermission(resource, action as PermissionAction)
+        return hasPermission(resource, (action || '') as PermissionAction)
       })
     })
   }, [items, hasPermission])

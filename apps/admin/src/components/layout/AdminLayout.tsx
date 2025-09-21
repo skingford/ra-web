@@ -3,10 +3,8 @@ import {
   Box,
   Flex,
   useBreakpointValue,
-  Drawer,
-  DrawerContent,
-  useDisclosure,
 } from '@chakra-ui/react'
+import { Drawer } from '@chakra-ui/react'
 import { useUIStore } from '../../stores/uiStore'
 import { Sidebar } from './Sidebar'
 import { Header } from './Header'
@@ -27,7 +25,9 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   actions,
 }) => {
   const { sidebarCollapsed, setSidebarCollapsed, setBreadcrumbs } = useUIStore()
-  const { open, onOpen, onClose, setOpen } = useDisclosure()
+  const [open, setOpen] = React.useState(false)
+  const onOpen = () => setOpen(true)
+  const onClose = () => setOpen(false)
   
   // Determine if we should show mobile layout
   const isMobile = useBreakpointValue({ base: true, md: false })

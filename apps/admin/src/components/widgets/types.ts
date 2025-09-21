@@ -45,6 +45,17 @@ export interface MetricConfig {
   };
   format?: 'number' | 'currency' | 'percentage';
   icon?: string;
+  target?: number;
+  progress?: number;
+  comparison?: {
+    value: number;
+    label: string;
+    period: string;
+  };
+  status?: 'success' | 'warning' | 'error' | 'info';
+  subtitle?: string;
+  showProgress?: boolean;
+  showComparison?: boolean;
 }
 
 export interface WidgetData {

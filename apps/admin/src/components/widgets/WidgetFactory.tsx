@@ -9,6 +9,8 @@ interface WidgetFactoryProps {
   onRefresh?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
+  onChartDrillDown?: (data: any, point: any) => void;
+  onMetricDrillDown?: (metric: any) => void;
   isEditable?: boolean;
 }
 
@@ -18,6 +20,8 @@ export const WidgetFactory: React.FC<WidgetFactoryProps> = ({
   onRefresh,
   onEdit,
   onDelete,
+  onChartDrillDown,
+  onMetricDrillDown,
   isEditable,
 }) => {
   const commonProps = {
@@ -31,10 +35,10 @@ export const WidgetFactory: React.FC<WidgetFactoryProps> = ({
 
   switch (config.type) {
     case 'chart':
-      return <ChartWidget {...commonProps} />;
+      return <ChartWidget {...commonProps} onDrillDown={onChartDrillDown} />;
     
     case 'metric':
-      return <MetricWidget {...commonProps} />;
+      return <MetricWidget {...commonProps} onDrillDown={onMetricDrillDown} />;
     
     case 'table':
       // TODO: Implement TableWidget in future tasks

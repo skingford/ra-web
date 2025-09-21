@@ -170,8 +170,8 @@ describe('UIStore', () => {
       
       const state = useUIStore.getState()
       expect(state.modals).toHaveLength(1)
-      expect(state.modals[0].data).toEqual({ key: 'value2' })
-      expect(state.modals[0].isOpen).toBe(true)
+      expect(state.modals[0]?.data).toEqual({ key: 'value2' })
+      expect(state.modals[0]?.isOpen).toBe(true)
     })
 
     it('should close modal by id', () => {
@@ -181,7 +181,7 @@ describe('UIStore', () => {
       closeModal('test-modal')
       
       const state = useUIStore.getState()
-      expect(state.modals[0].isOpen).toBe(false)
+      expect(state.modals[0]?.isOpen).toBe(false)
     })
 
     it('should handle multiple modals', () => {
@@ -195,8 +195,8 @@ describe('UIStore', () => {
       closeModal('modal1')
       
       const state = useUIStore.getState()
-      expect(state.modals[0].isOpen).toBe(false)
-      expect(state.modals[1].isOpen).toBe(true)
+      expect(state.modals[0]?.isOpen).toBe(false)
+      expect(state.modals[1]?.isOpen).toBe(true)
     })
   })
 

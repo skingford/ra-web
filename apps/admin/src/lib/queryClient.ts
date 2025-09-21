@@ -3,8 +3,6 @@ import { useUIStore } from '../stores/uiStore'
 
 // Error handler for queries and mutations
 const handleError = (error: unknown) => {
-  const uiStore = useUIStore.getState()
-  
   let errorMessage = 'An unexpected error occurred'
   let errorCode = 'UNKNOWN_ERROR'
   
@@ -17,13 +15,6 @@ const handleError = (error: unknown) => {
       errorMessage = error.message
     }
   }
-  
-  // Add error notification
-  uiStore.addNotification({
-    title: 'Error',
-    message: errorMessage,
-    type: 'error',
-  })
   
   console.error('Query/Mutation Error:', { errorCode, errorMessage, error })
 }

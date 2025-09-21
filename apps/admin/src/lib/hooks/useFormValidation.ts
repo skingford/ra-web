@@ -173,7 +173,7 @@ export function useFormValidation<T extends Record<string, any>>(
   const initialValuesRef = React.useRef<T>(initialValues)
 
   // Debounced values for async validation
-  const debouncedValues = useDebounce(values, debounceMs)
+  // const debouncedValues = useDebounce(values, debounceMs)
 
   // Validate a single field
   const validateField = useCallback(async (field: keyof T): Promise<boolean> => {
@@ -416,7 +416,7 @@ export function useFormValidation<T extends Record<string, any>>(
   }, [setValue])
 
   const handleBlur = useCallback((field: keyof T) => {
-    return (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    return (_event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       setTouched(field, true)
       
       if (validateOnBlur) {
@@ -536,7 +536,7 @@ export const createConditionalRule = <T>(
     if (!condition(formValues as T)) return null
     return rule.custom?.(value, formValues) || null
   },
-  required: rule.required,
+  required: rule.required || false,
   // Add other rule properties as needed
 })
 
@@ -579,7 +579,7 @@ export function useFormAutoSave<T extends Record<string, any>>(
   const { delay = 2000, enabled = true, skipFields = [] } = options
   const [isSaving, setIsSaving] = React.useState(false)
   const [lastSaved, setLastSaved] = React.useState<Date | null>(null)
-  const saveTimeoutRef = React.useRef<NodeJS.Timeout>()
+  const saveTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
   const lastSavedValuesRef = React.useRef<T>(values)
 
   const debouncedSave = React.useCallback(async (valuesToSave: T) => {

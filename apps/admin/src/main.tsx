@@ -1,13 +1,27 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AppProviders } from './providers'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import App from './App.tsx'
 import './index.css'
 
-createRoot(document.getElementById('root')!).render(
+console.log('main.tsx 开始执行')
+
+const rootElement = document.getElementById('root')
+if (!rootElement) {
+  throw new Error('Root element not found')
+}
+
+console.log('找到 root 元素，开始渲染应用')
+
+createRoot(rootElement).render(
   <StrictMode>
-    <AppProviders>
-      <App />
-    </AppProviders>
+    <ErrorBoundary>
+      <AppProviders>
+        <App />
+      </AppProviders>
+    </ErrorBoundary>
   </StrictMode>,
 )
+
+console.log('应用渲染完成')

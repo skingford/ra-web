@@ -80,7 +80,7 @@ export function useCrudCreate<T extends CrudEntity>(
     mutationFn: (data: CreateInput<T>) => 
       apiClient.post<ApiResponse<T>>(`/${resource}`, data),
     onMutate: async (variables) => {
-      if (!options?.optimisticUpdates) return
+      if (!options?.optimisticUpdates) return undefined
 
       // Cancel outgoing refetches
       await queryClient.cancelQueries({ 
@@ -167,7 +167,7 @@ export function useCrudCreate<T extends CrudEntity>(
       }
       
       // Call custom onSuccess if provided
-      options?.onSuccess?.(response, variables, context)
+      options?.onSuccess?.(response, variables, context, {} as any)
     },
     retry: (failureCount, error) => {
       // Don't retry on client errors (4xx)
@@ -214,6 +214,8 @@ export function useCrudUpdate<T extends CrudEntity>(
       const previousListData = queryClient.getQueriesData({ 
         queryKey: queryKeys.list(resource) 
       })
+
+      return { previousDetailData, previousListData }
 
       // Optimistically update detail cache
       if (previousDetailData && options?.optimisticUpdates !== false) {
@@ -297,7 +299,7 @@ export function useCrudUpdate<T extends CrudEntity>(
       )
       
       // Call custom onSuccess if provided
-      options?.onSuccess?.(response, { id, data: {} as UpdateInput<T> }, undefined)
+      options?.onSuccess?.(response, { id, data: {} as UpdateInput<T> }, undefined, {} as any)
     },
     retry: (failureCount, error) => {
       // Don't retry on client errors (4xx)
@@ -344,6 +346,8 @@ export function useCrudDelete<T extends CrudEntity>(
       const previousListData = queryClient.getQueriesData({ 
         queryKey: queryKeys.list(resource) 
       })
+
+      return { previousDetailData, previousListData }
 
       if (options?.optimisticUpdates !== false) {
         // Optimistically remove from detail cache
@@ -422,7 +426,7 @@ export function useCrudDelete<T extends CrudEntity>(
       }
       
       // Call custom onSuccess if provided
-      options?.onSuccess?.(response, id, undefined)
+      options?.onSuccess?.(response, id, undefined, {} as any)
     },
     retry: (failureCount, error) => {
       // Don't retry on client errors (4xx)
@@ -467,6 +471,8 @@ export function useCrudBulkDelete<T extends CrudEntity>(
         id,
         data: queryClient.getQueryData(queryKeys.detail(resource, String(id)))
       }))
+
+      return { previousListData, previousDetailData }
 
       // Optimistically remove items from list caches
       queryClient.setQueriesData<PaginatedResponse<T>>(
@@ -539,7 +545,7 @@ export function useCrudBulkDelete<T extends CrudEntity>(
       )
       
       // Call custom onSuccess if provided
-      options?.onSuccess?.(response, ids, undefined)
+      options?.onSuccess?.(response, ids, undefined, {} as any)
     },
     retry: (failureCount, error) => {
       // Don't retry on client errors (4xx)
@@ -669,7 +675,7 @@ export function useCrudBulkUpdate<T extends CrudEntity>(
       )
       
       // Call custom onSuccess if provided
-      options?.onSuccess?.(response, { ids, data: {} as UpdateInput<T> }, undefined)
+      options?.onSuccess?.(response, { ids, data: {} as UpdateInput<T> }, undefined, {} as any)
     },
     retry: (failureCount, error) => {
       // Don't retry on client errors (4xx)
@@ -693,7 +699,7 @@ export function useCrud<T extends CrudEntity>(
   resource: string,
   options?: CrudHookOptions<T>
 ) {
-  const list = (params?: ListParams, queryOptions?: Partial<UseQueryOptions<PaginatedResponse<T>, Error>>) =>
+  const list = (params?: ListParams, queryOptions?: any) =>
     useCrudList<T>(resource, params, { 
       ...options?.queryOptions, 
       ...queryOptions,
@@ -701,7 +707,7 @@ export function useCrud<T extends CrudEntity>(
       retryDelay: options?.retryConfig?.retryDelay ?? ((attempt) => Math.min(1000 * 2 ** attempt, 30000)),
     })
 
-  const detail = (id: string | number | undefined, queryOptions?: Partial<UseQueryOptions<ApiResponse<T>, Error>>) =>
+  const detail = (id: string | number | undefined, queryOptions?: any) =>
     useCrudDetail<T>(resource, id, { 
       ...options?.queryOptions, 
       ...queryOptions,
@@ -712,32 +718,32 @@ export function useCrud<T extends CrudEntity>(
   const create = useCrudCreate<T>(resource, {
     ...options?.mutationOptions?.create,
     optimisticUpdates: options?.optimisticUpdates ?? true,
-    onError: options?.onError,
-    onSuccess: options?.onSuccess,
+    onError: options?.onError as any,
+    onSuccess: options?.onSuccess as any,
   })
   
   const update = useCrudUpdate<T>(resource, {
     ...options?.mutationOptions?.update,
     optimisticUpdates: options?.optimisticUpdates ?? true,
-    onError: options?.onError,
-    onSuccess: options?.onSuccess,
+    onError: options?.onError as any,
+    onSuccess: options?.onSuccess as any,
   })
   
   const remove = useCrudDelete<T>(resource, {
     ...options?.mutationOptions?.delete,
     optimisticUpdates: options?.optimisticUpdates ?? true,
-    onError: options?.onError,
-    onSuccess: options?.onSuccess,
+    onError: options?.onError as any,
+    onSuccess: options?.onSuccess as any,
   })
   
   const bulkDelete = useCrudBulkDelete<T>(resource, {
-    onError: options?.onError,
-    onSuccess: options?.onSuccess,
+    onError: options?.onError as any,
+    onSuccess: options?.onSuccess as any,
   })
   
   const bulkUpdate = useCrudBulkUpdate<T>(resource, {
-    onError: options?.onError,
-    onSuccess: options?.onSuccess,
+    onError: options?.onError as any,
+    onSuccess: options?.onSuccess as any,
   })
 
   return {
@@ -806,7 +812,7 @@ export function useCrudForm<T extends CrudEntity>(
     optimisticUpdates?: boolean
   }
 ) {
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
   
   // Fetch existing data if editing
   const { data: existingData, isLoading } = useCrudDetail<T>(
@@ -816,24 +822,24 @@ export function useCrudForm<T extends CrudEntity>(
   )
   
   const createMutation = useCrudCreate<T>(resource, {
-    optimisticUpdates: options?.optimisticUpdates,
+    optimisticUpdates: options?.optimisticUpdates ?? false,
     onSuccess: (response) => {
       options?.onSuccess?.(response.data, true)
     },
     onError: (error) => {
       options?.onError?.(error, true)
     }
-  })
+  } as any)
   
   const updateMutation = useCrudUpdate<T>(resource, {
-    optimisticUpdates: options?.optimisticUpdates,
+    optimisticUpdates: options?.optimisticUpdates ?? false,
     onSuccess: (response) => {
       options?.onSuccess?.(response.data, false)
     },
     onError: (error) => {
       options?.onError?.(error, false)
     }
-  })
+  } as any)
   
   const submit = React.useCallback((data: CreateInput<T> | UpdateInput<T>) => {
     if (id) {

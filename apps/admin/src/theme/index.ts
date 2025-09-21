@@ -398,8 +398,8 @@ const themeConfig = defineConfig({
   theme: {
     tokens,
     breakpoints,
-    globalCss,
   },
+  globalCss,
 })
 
 // Create and export the system

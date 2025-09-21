@@ -4,6 +4,7 @@ export { ChartWidget } from './ChartWidget';
 export { MetricWidget } from './MetricWidget';
 export { WidgetFactory } from './WidgetFactory';
 export { DashboardGrid } from './DashboardGrid';
+export { InteractiveCharts } from './InteractiveCharts';
 
 // Hooks
 export { useWidgetData } from './hooks/useWidgetData';
